@@ -1,0 +1,2103 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سیستم مدیریت پیشرفته - دیتابیس منظم</title>
+<meta name="theme-color" content="#2563eb">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="دیتابیس منظم">
+<meta name="mobile-web-app-capable" content="yes">
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiB2aWV3Qm94PSIwIDAgMTkyIDE5MiI+PHJlY3Qgd2lkdGg9IjE5MiIgaGVpZ2h0PSIxOTIiIHJ4PSIzMiIgZmlsbD0iIzI1NjNlYiIvPjx0ZXh0IHg9Ijk2IiB5PSIxMjAiIGZvbnQtc2l6ZT0iOTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNmZmYiIGZvbnQtZmFtaWx5PSJUYWhvbWEiPvCfk4o8L3RleHQ+PC9zdmc+">
+<script>
+(function(){
+  const manifest = {
+    "name": "دیتابیس منظم - سیستم مدیریت",
+    "short_name": "دیتابیس منظم",
+    "description": "سیستم مدیریت پیشرفته مشتریان، مصارفات و شراکت",
+    "start_url": ".",
+    "scope": ".",
+    "display": "standalone",
+    "orientation": "portrait-primary",
+    "background_color": "#2563eb",
+    "theme_color": "#2563eb",
+    "lang": "fa",
+    "dir": "rtl",
+    "icons": [
+      {
+        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiB2aWV3Qm94PSIwIDAgMTkyIDE5MiI+PHJlY3Qgd2lkdGg9IjE5MiIgaGVpZ2h0PSIxOTIiIHJ4PSIzMiIgZmlsbD0iIzI1NjNlYiIvPjx0ZXh0IHg9Ijk2IiB5PSIxMjAiIGZvbnQtc2l6ZT0iOTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNmZmYiIGZvbnQtZmFtaWx5PSJUYWhvbWEiPvCfk4o8L3RleHQ+PC9zdmc+",
+        "sizes": "192x192",
+        "type": "image/svg+xml",
+        "purpose": "any"
+      }
+    ]
+  };
+  const manifestStr = JSON.stringify(manifest);
+  const manifestBlob = new Blob([manifestStr], {type:'application/manifest+json'});
+  const manifestURL = URL.createObjectURL(manifestBlob);
+  const link = document.createElement('link');
+  link.rel = 'manifest';
+  link.href = manifestURL;
+  document.head.appendChild(link);
+})();
+</script>
+<style>
+:root{
+  --primary:#2563eb; --primary-dark:#1e40af; --success:#16a34a; --danger:#dc2626;
+  --warning:#f59e0b; --bg:#f1f5f9; --card:#ffffff; --text:#0f172a; --muted:#64748b;
+  --border:#e2e8f0; --shadow:0 4px 20px rgba(0,0,0,.08); --radius:14px;
+}
+[data-theme="dark"]{
+  --bg:#0f172a; --card:#1e293b; --text:#f1f5f9; --muted:#94a3b8; --border:#334155;
+}
+*{box-sizing:border-box; margin:0; padding:0; font-family:'Vazirmatn',Tahoma,sans-serif;}
+body{background:var(--bg); color:var(--text); min-height:100vh; transition:.3s;}
+button{cursor:pointer; font-family:inherit; border:none; transition:.2s;}
+input,select,textarea{font-family:inherit; width:100%; padding:9px 12px; border:1.5px solid var(--border);
+  border-radius:10px; background:var(--card); color:var(--text); font-size:.9rem; transition:.2s;}
+input:focus,select:focus,textarea:focus{outline:none; border-color:var(--primary); box-shadow:0 0 0 3px rgba(37,99,235,.15);}
+label{display:block; font-weight:600; font-size:.85rem; margin-bottom:5px; color:var(--muted);}
+.btn{background:var(--primary); color:#fff; padding:10px 18px; border-radius:10px; font-weight:600; font-size:.9rem;}
+.btn:hover{background:var(--primary-dark); transform:translateY(-1px);}
+.btn.success{background:var(--success);} .btn.success:hover{background:#15803d;}
+.btn.danger{background:var(--danger);} .btn.danger:hover{background:#b91c1c;}
+.btn.warning{background:var(--warning);} .btn.warning:hover{background:#d97706;}
+.btn.ghost{background:transparent; color:var(--text); border:1.5px solid var(--border);}
+.btn.ghost:hover{background:var(--border);}
+.btn.small{padding:6px 12px; font-size:.8rem; border-radius:8px;}
+.btn.install{background:linear-gradient(135deg,#7c3aed,#2563eb); color:#fff; font-weight:700;
+  box-shadow:0 4px 14px rgba(124,58,237,.4);}
+.btn.install:hover{background:linear-gradient(135deg,#6d28d9,#1d4ed8); transform:translateY(-2px);}
+.card{background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow); padding:20px; margin-bottom:20px;}
+
+/* ===== WELCOME SCREEN ===== */
+#welcomeScreen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1e3a8a, #2563eb, #7c3aed);
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+  animation: welcomeFadeIn 1.2s ease;
+}
+@keyframes welcomeFadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+.welcome-content {
+  max-width: 700px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  border-radius: 28px;
+  padding: 50px 40px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.4);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.welcome-bismillah {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  color: #fbbf24;
+  text-shadow: 0 2px 15px rgba(251,191,36,.5);
+  line-height: 1.5;
+}
+.welcome-title {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  color: #fff;
+}
+.welcome-sub {
+  font-size: 1.1rem;
+  color: #e0e7ff;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.welcome-org {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #fbbf24;
+  margin-bottom: 24px;
+  text-shadow: 0 2px 10px rgba(251,191,36,.3);
+}
+.welcome-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  animation: pulseIcon 2s infinite;
+}
+.welcome-icon img {
+  width: 100px;
+  height: 100px;
+  border-radius: 20px;
+  object-fit: cover;
+  box-shadow: 0 8px 30px rgba(0,0,0,.4);
+}
+@keyframes pulseIcon {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+.welcome-loader {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255,255,255,0.3);
+  border-top-color: #fbbf24;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 20px auto 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.welcome-contact {
+  margin-top: 24px;
+  font-size: 0.85rem;
+  color: #c7d2fe;
+  line-height: 2;
+}
+.welcome-contact strong { color: #fbbf24; }
+
+#loginScreen{display:none; justify-content:center; align-items:center; min-height:100vh;
+  background:linear-gradient(135deg,#2563eb,#7c3aed);}
+.login-box{background:#fff; padding:40px 32px; border-radius:20px; width:420px; box-shadow:0 20px 60px rgba(0,0,0,.3); text-align:center;}
+.login-box h2{color:#1e293b; margin-bottom:8px;} .login-box p{color:#64748b; margin-bottom:24px; font-size:.9rem;}
+.login-box input{margin-bottom:14px; padding:12px;}
+.login-sec{font-size:.72rem; color:#94a3b8; margin-top:14px; line-height:1.7;}
+
+#app{display:none;}
+.topbar{background:var(--card); box-shadow:var(--shadow); padding:14px 24px; display:flex;
+  justify-content:space-between; align-items:center; position:sticky; top:0; z-index:100; flex-wrap:wrap; gap:10px;}
+.brand{display:flex; align-items:center; gap:12px;}
+.brand img{width:44px; height:44px; border-radius:12px; object-fit:cover; background:#e2e8f0;}
+.brand h1{font-size:1.15rem;} .brand small{color:var(--muted); font-size:.75rem;}
+.topbar-info{display:flex; gap:16px; align-items:center; font-size:.85rem; color:var(--muted); flex-wrap:wrap;}
+.topbar-info strong{color:var(--text);}
+.icon-btn{background:var(--bg); color:var(--text); width:38px; height:38px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center; font-size:1.1rem;}
+.icon-btn:hover{background:var(--border);}
+
+.tabs{display:flex; gap:6px; padding:12px 24px; background:var(--card); border-bottom:2px solid var(--border);
+  overflow-x:auto; position:sticky; top:70px; z-index:99;}
+.tab{padding:10px 18px; border-radius:10px 10px 0 0; background:transparent; color:var(--muted);
+  font-weight:600; font-size:.9rem; white-space:nowrap; border-bottom:3px solid transparent;}
+.tab:hover{color:var(--primary);} .tab.active{color:var(--primary); border-bottom-color:var(--primary); background:var(--bg);}
+.content{padding:24px; max-width:1500px; margin:0 auto;}
+
+.section{display:none;} .section.active{display:block; animation:fade .3s;}
+@keyframes fade{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
+.section h2{font-size:1.3rem; margin-bottom:16px; display:flex; align-items:center; gap:10px;}
+.grid{display:grid; gap:14px;}
+.g2{grid-template-columns:repeat(2,1fr);} .g3{grid-template-columns:repeat(3,1fr);}
+.g4{grid-template-columns:repeat(4,1fr);}
+@media(max-width:900px){.g2,.g3,.g4{grid-template-columns:1fr;}}
+.form-row{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;}
+
+table{width:100%; border-collapse:collapse; margin-top:14px; font-size:.85rem; background:var(--card);
+  border-radius:10px; overflow:hidden;}
+th,td{padding:10px 12px; text-align:center; border-bottom:1px solid var(--border);}
+th{background:var(--primary); color:#fff; font-weight:600; font-size:.82rem;}
+tbody tr:hover{background:rgba(37,99,235,.05);}
+.table-wrap{overflow-x:auto; border-radius:10px; box-shadow:var(--shadow);}
+.empty{text-align:center; color:var(--muted); padding:30px; font-size:.9rem;}
+
+.stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; margin-bottom:20px;}
+.stat{background:var(--card); padding:18px; border-radius:var(--radius); box-shadow:var(--shadow);
+  border-right:4px solid var(--primary);}
+.stat .label{color:var(--muted); font-size:.8rem; margin-bottom:8px;}
+.stat .value{font-size:1.5rem; font-weight:700; color:var(--text);}
+.stat .value small{font-size:.75rem; color:var(--muted);}
+.stat.green{border-right-color:var(--success);} .stat.red{border-right-color:var(--danger);}
+.stat.orange{border-right-color:var(--warning);} .stat.purple{border-right-color:#7c3aed;}
+
+.a4-page{
+  width:210mm; min-height:297mm; margin:0 auto; background:#fff; padding:8mm;
+  box-shadow:0 0 20px rgba(0,0,0,.15); color:#000; display:flex; flex-direction:column; gap:6mm;
+  font-family:'Vazirmatn',Tahoma,sans-serif;
+}
+.receipt-modern{
+  flex:1; border:2.5px solid #1e3a8a; border-radius:10px; overflow:hidden;
+  display:flex; flex-direction:column; background:#fff;
+}
+.receipt-head{
+  background:linear-gradient(135deg,#1e3a8a,#2563eb); color:#fff; padding:8px 12px;
+  display:flex; justify-content:space-between; align-items:center;
+}
+.receipt-head .title{font-size:1.05rem; font-weight:800;}
+.receipt-head .title small{display:block; font-weight:400; font-size:.68rem; opacity:.85; margin-top:2px;}
+.receipt-head .logo-box{display:flex; align-items:center; gap:8px;}
+.receipt-head .logo-box img{width:38px; height:38px; border-radius:8px; object-fit:cover; background:#fff;}
+.receipt-head .inv-no{background:rgba(255,255,255,.2); padding:4px 10px; border-radius:6px; font-weight:700; font-size:.75rem;}
+
+.receipt-body{padding:8px 12px; flex:1; display:flex; flex-direction:column; gap:6px;}
+.rc-info-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:4px 10px; font-size:.72rem;}
+.rc-info-grid .row{display:flex; justify-content:space-between; border-bottom:1px dotted #999; padding:2px 0;}
+.rc-info-grid .row span:first-child{color:#475569; font-weight:600;}
+.rc-info-grid .row span:last-child{font-weight:700; color:#0f172a;}
+
+.rc-table{width:100%; border-collapse:collapse; font-size:.7rem; margin-top:4px;}
+.rc-table th{background:#dbeafe; color:#1e3a8a; padding:5px 4px; border:1px solid #93c5fd; font-size:.68rem;}
+.rc-table td{padding:5px 4px; border:1px solid #cbd5e1; text-align:center;}
+
+.rc-summary{display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-top:4px;}
+.rc-summary .box{border:1.5px solid #1e3a8a; border-radius:6px; padding:5px 8px; text-align:center; background:#f8fafc;}
+.rc-summary .box .lbl{font-size:.62rem; color:#475569; font-weight:600;}
+.rc-summary .box .val{font-size:.85rem; font-weight:800; color:#1e3a8a; margin-top:2px;}
+
+.rc-sign{display:flex; justify-content:space-between; padding:6px 14px 0; font-size:.65rem; color:#475569; margin-top:auto;}
+.rc-sign div{text-align:center; border-top:1px dashed #64748b; padding-top:3px; min-width:110px;}
+
+.receipt-foot{background:#f1f5f9; padding:4px 12px; font-size:.6rem; color:#475569;
+  border-top:1px solid #cbd5e1; display:flex; justify-content:space-between;}
+
+@media print{
+  @page{size:A4; margin:0;}
+  body{background:#fff; padding:0; margin:0;}
+  body *{visibility:hidden;}
+  #printArea, #printArea *{visibility:visible;}
+  #printArea{position:absolute; top:0; right:0; left:0; width:210mm;}
+  .a4-page{box-shadow:none; padding:6mm; min-height:297mm;}
+  .topbar,.tabs,.footer,.no-print{display:none!important;}
+  .content{padding:0!important;}
+}
+.chart-box{background:var(--card); padding:20px; border-radius:var(--radius); box-shadow:var(--shadow); margin-bottom:20px;}
+.chart-box canvas{max-height:280px;}
+
+.receipt-wrap{background:#e2e8f0; padding:20px; border-radius:var(--radius); overflow-x:auto;}
+[data-theme="dark"] .receipt-wrap{background:#0f172a;}
+
+.toast{position:fixed; bottom:24px; left:24px; background:var(--success); color:#fff; padding:12px 20px;
+  border-radius:10px; box-shadow:var(--shadow); z-index:2000; animation:slideUp .3s; font-size:.9rem;}
+.toast.error{background:var(--danger);}
+.toast.warning{background:var(--warning);}
+@keyframes slideUp{from{transform:translateY(20px); opacity:0;} to{transform:none; opacity:1;}}
+
+.footer{text-align:center; padding:20px; color:var(--muted); font-size:.8rem; border-top:1px solid var(--border); margin-top:30px;}
+
+.modal-bg{position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; justify-content:center;
+  align-items:center; z-index:1000; padding:20px;}
+.modal-bg.show{display:flex;}
+.modal{background:var(--card); padding:24px; border-radius:16px; max-width:700px; width:100%; max-height:90vh; overflow-y:auto;}
+
+.lock-warn{background:#fee2e2; color:#991b1b; padding:10px; border-radius:10px; margin-bottom:14px; font-size:.85rem; text-align:center;}
+
+.auto-date{background:linear-gradient(135deg,#e0e7ff,#c7d2fe)!important; font-weight:800; color:#3730a3!important; cursor:not-allowed;}
+
+#installBanner{
+  position:fixed; bottom:0; left:0; right:0; background:linear-gradient(135deg,#7c3aed,#2563eb);
+  color:#fff; padding:14px 20px; display:none; justify-content:space-between; align-items:center;
+  z-index:3000; box-shadow:0 -4px 20px rgba(0,0,0,.3); flex-wrap:wrap; gap:10px;
+}
+#installBanner.show{display:flex; animation:slideUp .4s;}
+#installBanner .info{display:flex; align-items:center; gap:12px; font-weight:600;}
+#installBanner .info .ico{font-size:1.8rem;}
+#installBanner .actions{display:flex; gap:8px;}
+#installBanner button{padding:8px 16px; border-radius:8px; font-weight:700; font-size:.85rem;}
+#installBanner .accept{background:#fff; color:#2563eb;}
+#installBanner .accept:hover{background:#e0e7ff;}
+#installBanner .dismiss{background:rgba(255,255,255,.2); color:#fff; border:1px solid rgba(255,255,255,.4);}
+#installBanner .dismiss:hover{background:rgba(255,255,255,.3);}
+
+.install-guide{text-align:right; line-height:2; font-size:.9rem;}
+.install-guide h3{margin-bottom:12px; color:var(--primary);}
+.install-guide ol{padding-right:20px;}
+.install-guide li{margin-bottom:10px;}
+.install-guide .note{background:#fef3c7; color:#92400e; padding:10px 14px; border-radius:8px; margin:14px 0; font-size:.85rem;}
+
+/* Icon upload section */
+.icon-upload-box{
+  display:flex; align-items:center; gap:16px; padding:14px; background:var(--bg);
+  border-radius:12px; border:2px dashed var(--border);
+}
+.icon-upload-box img{
+  width:80px; height:80px; border-radius:16px; object-fit:cover;
+  background:var(--card); border:2px solid var(--border);
+}
+</style>
+</head>
+<body>
+
+<!-- ================= WELCOME SCREEN ================= -->
+<div id="welcomeScreen">
+  <div class="welcome-content">
+    <div class="welcome-bismillah" id="wBismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+    <div class="welcome-icon" id="wIcon">🛢️</div>
+    <div class="welcome-title" id="wTitle">خوش آمدید</div>
+    <div class="welcome-sub" id="wSub">به سیستم مدیریت</div>
+    <div class="welcome-org" id="wOrg">روغنیات و فروشگاه</div>
+    <div class="welcome-sub" style="margin-top:10px;" id="wManager">انجنیر سید مجیب الله امینیار</div>
+    <div class="welcome-loader"></div>
+    <div class="welcome-contact" id="wContact">
+      <strong>تماس:</strong> ۰۷۹۰۹۹۰۶۹۶ - ۰۷۷۳۵۵۰۰۹۰<br>
+      <span style="font-size:.75rem;">در حال بارگذاری سیستم...</span>
+    </div>
+  </div>
+</div>
+
+<!-- ================= INSTALL BANNER ================= -->
+<div id="installBanner">
+  <div class="info">
+    <span class="ico">📲</span>
+    <span>دیتابیس را روی کمپیوتر خود نصب کنید و آفلاین استفاده کنید</span>
+  </div>
+  <div class="actions">
+    <button class="accept" onclick="installApp()">نصب کن</button>
+    <button class="dismiss" onclick="dismissInstall()">بعداً</button>
+  </div>
+</div>
+
+<!-- ================= LOGIN ================= -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div style="font-size:3rem; margin-bottom:10px;">🔐</div>
+    <h2 id="loginTitle">ورود امن به سیستم</h2>
+    <p id="loginSubtitle">لطفاً نام کاربری و رمز عبور خود را وارد کنید</p>
+    <div id="lockMsg"></div>
+    <input type="text" id="loginUser" placeholder="نام کاربری" autocomplete="username">
+    <input type="password" id="loginPass" placeholder="رمز عبور" autocomplete="current-password">
+    <button class="btn" style="width:100%; padding:12px;" onclick="doLogin()">ورود</button>
+    <p style="margin-top:16px; color:#94a3b8; font-size:.8rem;">پیش‌فرض: admin / admin</p>
+    <div class="login-sec">🔒 رمزها با SHA-256 هش می‌شوند | قفل بعد از ۵ تلاش ناموفق | جلسه ۳۰ دقیقه</div>
+  </div>
+</div>
+
+<!-- ================= APP ================= -->
+<div id="app">
+  <div class="topbar">
+    <div class="brand">
+      <img id="brandLogo" src="" alt="لوگو" onerror="this.style.display='none'">
+      <div>
+        <h1 id="brandTitle">سیستم مدیریت</h1>
+        <small id="brandSub">انجنیر سید مجیب الله امینیار</small>
+      </div>
+    </div>
+    <div class="topbar-info">
+      <span>📅 <strong id="topDate">---</strong></span>
+      <span>⏰ <strong id="topTime">---</strong></span>
+      <span>👤 <strong id="topUser">مدیر</strong></span>
+      <button class="icon-btn" onclick="toggleTheme()" title="تغییر تم">🌙</button>
+      <button class="icon-btn" onclick="logout()" title="خروج">🚪</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="dashboard">📊 داشبورد</button>
+    <button class="tab" data-tab="customers">👥 مشتریان</button>
+    <button class="tab" data-tab="expenses">💰 مصارفات</button>
+    <button class="tab" data-tab="partners">🤝 شراکت</button>
+    <button class="tab" data-tab="users">👤 کاربران</button>
+    <button class="tab" data-tab="reports">📈 راپور</button>
+    <button class="tab" data-tab="receipt">🧾 بل رسید</button>
+    <button class="tab" data-tab="settings">⚙️ تنظیمات</button>
+  </div>
+
+  <div class="content">
+
+    <!-- DASHBOARD -->
+    <div class="section active" id="tab-dashboard">
+      <h2>📊 داشبورد آماری</h2>
+      <div class="stats">
+        <div class="stat"><div class="label">تعداد مشتریان</div><div class="value" id="stCust">0</div></div>
+        <div class="stat green"><div class="label">مجموعه فروشات</div><div class="value" id="stSales">0 <small>؋</small></div></div>
+        <div class="stat red"><div class="label">مجموعه مصارفات</div><div class="value" id="stExp">0 <small>؋</small></div></div>
+        <div class="stat orange"><div class="label">مفاد کل</div><div class="value" id="stProfit">0 <small>؋</small></div></div>
+        <div class="stat purple"><div class="label">مجموعه لیتر</div><div class="value" id="stLiters">0</div></div>
+      </div>
+      <div class="chart-box">
+        <h3 style="margin-bottom:14px;">📈 نمودار فروشات و مصارفات ماهانه</h3>
+        <canvas id="mainChart"></canvas>
+      </div>
+    </div>
+
+    <!-- CUSTOMERS -->
+    <div class="section" id="tab-customers">
+      <h2>👥 بخش مشتریان</h2>
+      <div class="card">
+        <div class="grid g4">
+          <div>
+            <label>شماره بل (خودکار)</label>
+            <input id="cInvoice" readonly style="background:linear-gradient(135deg,#dcfce7,#bbf7d0); font-weight:800; color:#166534; text-align:center;">
+          </div>
+          <div><label>اسم مشتری</label><input id="cName" maxlength="100"></div>
+          <div><label>آدرس</label><input id="cAddress" maxlength="200"></div>
+          <div><label>شماره تماس</label><input id="cPhone" maxlength="20"></div>
+          <div>
+            <label>تاریخ (شمسی - خودکار)</label>
+            <input id="cDate" readonly class="auto-date" title="تاریخ به‌صورت خودکار تنظیم می‌شود">
+          </div>
+          <div><label>اسم لیتر (نوع)</label><input id="cPackage" maxlength="80" placeholder="مثلاً: بنزین، دیزل"></div>
+          <div><label>مقدار</label><input type="number" id="cQty" step="0.01" min="0"></div>
+          <div><label>واحد</label>
+            <select id="cUnit"><option>لیتر</option><option>دانه</option><option>قطی</option></select>
+          </div>
+          <div><label>فی فروش (افغانی)</label><input type="number" id="cRate" step="0.01" min="0"></div>
+          <div><label>فی خرید (افغانی)</label><input type="number" id="cBuyRate" step="0.01" min="0"></div>
+          <div><label>ملاحظات</label><input id="cNotes" maxlength="200"></div>
+          <div>
+            <label>مبلغ کل (فروش - خودکار)</label>
+            <input id="cTotalAmount" readonly style="background:linear-gradient(135deg,#dbeafe,#bfdbfe); font-weight:800; color:#1e40af;">
+          </div>
+          <div>
+            <label>مبلغ کل خریداری (خودکار)</label>
+            <input id="cBuyAmount" readonly style="background:linear-gradient(135deg,#fee2e2,#fecaca); font-weight:800; color:#991b1b;">
+          </div>
+          <div>
+            <label>مفاد فی دانه (خودکار)</label>
+            <input id="cProfitPerUnit" readonly style="background:linear-gradient(135deg,#fef3c7,#fde68a); font-weight:800; color:#92400e;">
+          </div>
+          <div>
+            <label>مفاد کل (خودکار)</label>
+            <input id="cProfitTotal" readonly style="background:linear-gradient(135deg,#d1fae5,#a7f3d0); font-weight:800; color:#065f46;">
+          </div>
+        </div>
+        <div class="form-row">
+          <button class="btn success" onclick="saveCustomer()">💾 ذخیره</button>
+          <button class="btn ghost" onclick="clearCustomerForm()">🔄 پاک کردن</button>
+          <button class="btn ghost" onclick="exportCSV('customers')">📄 خروجی CSV</button>
+        </div>
+      </div>
+      <div style="display:flex; gap:10px; margin-bottom:10px;">
+        <input id="searchCust" placeholder="🔍 جستجو در مشتریان..." oninput="renderCustomers()" style="max-width:300px;">
+      </div>
+      <div class="table-wrap">
+        <table id="tblCustomers">
+          <thead><tr>
+            <th>#</th><th>شماره بل</th><th>اسم</th><th>آدرس</th><th>تماس</th><th>تاریخ</th><th>نوع لیتر</th>
+            <th>مقدار</th><th>واحد</th><th>فی فروش</th><th>فی خرید</th>
+            <th>مبلغ کل</th><th>مبلغ خریداری</th><th>مفاد فی دانه</th><th>مفاد کل</th><th>ملاحظات</th><th>عملیات</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- EXPENSES -->
+    <div class="section" id="tab-expenses">
+      <h2>💰 بخش مصارفات</h2>
+      <div class="card">
+        <div class="grid g4">
+          <div>
+            <label>تاریخ (شمسی - خودکار)</label>
+            <input id="eDate" readonly class="auto-date" title="تاریخ به‌صورت خودکار تنظیم می‌شود">
+          </div>
+          <div><label>کرایه دوکان</label><input type="number" id="eRent" step="0.01" min="0"></div>
+          <div><label>بل برق</label><input type="number" id="eElectric" step="0.01" min="0"></div>
+          <div><label>مصرف انتقالات</label><input type="number" id="eTransport" step="0.01" min="0"></div>
+          <div><label>معاش کارمندان</label><input type="number" id="eSalary" step="0.01" min="0"></div>
+          <div><label>موضوع وسایر مصارفات</label><input id="eOtherSubject" maxlength="150" placeholder="موضوع / شرح سایر مصارفات"></div>
+          <div><label>مبلغ سایر مصارفات</label><input type="number" id="eOther" step="0.01" min="0"></div>
+          <div>
+            <label>مجموعه مصارفات (خودکار)</label>
+            <input id="eTotalExp" readonly style="background:linear-gradient(135deg,#fee2e2,#fecaca); font-weight:800; color:#991b1b;">
+          </div>
+        </div>
+        <div class="form-row">
+          <button class="btn success" onclick="saveExpense()">💾 ذخیره</button>
+          <button class="btn ghost" onclick="clearExpenseForm()">🔄 پاک کردن</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>تاریخ</th><th>کرایه</th><th>برق</th><th>انتقالات</th><th>معاش</th><th>موضوع سایر</th><th>مبلغ سایر</th><th>مجموع مصارفات</th><th>عملیات</th></tr></thead>
+          <tbody id="tblExpenses"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PARTNERS -->
+    <div class="section" id="tab-partners">
+      <h2>🤝 بخش شراکت</h2>
+      <div class="card">
+        <h3 style="margin-bottom:14px;">➕ افزودن شراکت</h3>
+        <div class="grid g3">
+          <div><label>اسم شریک</label><input id="pName" maxlength="100"></div>
+          <div><label>شماره تماس</label><input id="pPhone" maxlength="20"></div>
+          <div><label>موضوع مصرف</label><input id="pSubject" maxlength="150" placeholder="موضوع مصرف این شراکت"></div>
+          <div><label>کرایه دوکان</label><input type="number" id="pRent" step="0.01" min="0"></div>
+          <div><label>بل برق</label><input type="number" id="pElectric" step="0.01" min="0"></div>
+          <div><label>مصرف انتقالات</label><input type="number" id="pTransport" step="0.01" min="0"></div>
+          <div><label>معاش کارمندان</label><input type="number" id="pSalary" step="0.01" min="0"></div>
+          <div><label>وسایر مصارفات</label><input type="number" id="pOther" step="0.01" min="0"></div>
+          <div>
+            <label>مجموع مصارفات (خودکار)</label>
+            <input id="pTotalExp" readonly style="background:linear-gradient(135deg,#fee2e2,#fecaca); font-weight:800; color:#991b1b;">
+          </div>
+        </div>
+        <div class="form-row">
+          <button class="btn success" onclick="savePartner()">💾 ذخیره شراکت</button>
+          <button class="btn ghost" onclick="clearPartnerForm()">🔄 پاک کردن</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>#</th><th>اسم</th><th>تماس</th><th>موضوع مصرف</th>
+            <th>کرایه</th><th>برق</th><th>انتقالات</th><th>معاش</th><th>سایر</th>
+            <th>مجموع مصارفات</th><th>عملیات</th>
+          </tr></thead>
+          <tbody id="tblPartners"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- USERS -->
+    <div class="section" id="tab-users">
+      <h2>👤 بخش کاربران <span id="userEditBadge" style="display:none; font-size:.75rem; background:var(--warning); color:#fff; padding:4px 10px; border-radius:8px;">حالت ویرایش</span></h2>
+      <div class="card">
+        <div class="grid g4">
+          <div><label>نام کاربری</label><input id="uName" maxlength="50"></div>
+          <div><label>رمز عبور</label><input type="text" id="uPass" minlength="3"></div>
+          <div><label>نقش</label>
+            <select id="uRole"><option>مدیر</option><option>کارمند</option><option>مشاهده‌گر</option></select>
+          </div>
+          <div><label>عکس پروفایل</label><input type="file" id="uImage" accept="image/*" onchange="loadImage(event,'uPreview')"></div>
+          <div>
+            <label>پیش‌نمایش عکس</label>
+            <img id="uPreview" src="" style="width:70px; height:70px; border-radius:10px; object-fit:cover; border:2px solid var(--border); background:var(--bg);">
+          </div>
+        </div>
+        <div class="form-row">
+          <button class="btn success" id="uSaveBtn" onclick="saveUser()">💾 ذخیره کاربر جدید</button>
+          <button class="btn ghost" onclick="cancelUserEdit()">🔄 پاک کردن</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>عکس</th><th>نام</th><th>رمز (هش)</th><th>نقش</th><th>عملیات</th></tr></thead>
+          <tbody id="tblUsers"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- REPORTS -->
+    <div class="section" id="tab-reports">
+      <h2>📈 بخش راپور</h2>
+      <div class="card">
+        <div class="grid g4">
+          <div>
+            <label>از تاریخ (خودکار)</label>
+            <input id="rFrom" readonly class="auto-date">
+          </div>
+          <div>
+            <label>تا تاریخ (خودکار)</label>
+            <input id="rTo" readonly class="auto-date">
+          </div>
+          <div><label>نوع راپور</label>
+            <select id="rType">
+              <option value="daily">روزانه</option><option value="weekly">هفته‌وار</option>
+              <option value="monthly">ماهانه</option><option value="quarterly">ربع‌وار</option>
+              <option value="yearly">سالانه</option>
+            </select>
+          </div>
+          <div><label>بخش</label>
+            <select id="rSection"><option value="all">همه</option><option value="customers">مشتریان</option>
+              <option value="expenses">مصارفات</option><option value="partners">شراکت</option></select>
+          </div>
+        </div>
+        <div class="form-row">
+          <button class="btn" onclick="generateReport()">📊 تولید راپور</button>
+          <button class="btn ghost" onclick="printReport()">🖨️ چاپ راپور</button>
+          <button class="btn ghost" onclick="exportReportCSV()">📄 خروجی CSV</button>
+          <button class="btn ghost" onclick="resetReportDates()">🔄 تنظیم مجدد تاریخ‌ها</button>
+        </div>
+        <div style="margin-top:16px;">
+          <label>ماه‌های شمسی:</label>
+          <div id="monthBtns" style="display:flex; flex-wrap:wrap; gap:6px; margin-top:6px;"></div>
+        </div>
+      </div>
+      <div id="reportOutput" class="card">
+        <p style="color:var(--muted);">راپور اینجا نمایش داده می‌شود...</p>
+      </div>
+    </div>
+
+    <!-- RECEIPT -->
+    <div class="section" id="tab-receipt">
+      <h2>🧾 بخش بل رسید - دو بل در یک ورق A4</h2>
+      <div class="card no-print">
+        <div class="grid g3">
+          <div><label>انتخاب مشتری</label>
+            <select id="rSelect"></select>
+          </div>
+          <div><label>شماره بل (از مشتری)</label>
+            <input id="rInvoiceNo" readonly style="background:var(--bg); font-weight:700; text-align:center;">
+          </div>
+          <div style="display:flex; align-items:flex-end;">
+            <button class="btn" style="width:100%;" onclick="printReceipt()">🖨️ چاپ بل رسید</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="receipt-wrap">
+        <div id="printArea">
+          <div class="a4-page">
+            <!-- SELLER RECEIPT -->
+            <div class="receipt-modern">
+              <div class="receipt-head">
+                <div class="logo-box">
+                  <img id="rcLogo1" src="" style="display:none;">
+                  <div class="title">
+                    <span id="rcShop1">فروشگاه نمونه</span>
+                    <small id="rcDb1">دیتابیس منظم</small>
+                  </div>
+                </div>
+                <div style="text-align:center;">
+                  <div style="font-size:.85rem; font-weight:800;">🧾 بل فروشنده</div>
+                </div>
+                <div class="inv-no" id="rcInv1">INV-0000</div>
+              </div>
+              <div class="receipt-body">
+                <div class="rc-info-grid">
+                  <div class="row"><span>تاریخ:</span><span id="rcDate1">---</span></div>
+                  <div class="row"><span>تماس فروشنده:</span><span id="rcShopPhone1">---</span></div>
+                  <div class="row"><span>اسم مشتری:</span><span id="rcName1">---</span></div>
+                  <div class="row"><span>تماس مشتری:</span><span id="rcPhone1">---</span></div>
+                  <div class="row" style="grid-column:1/-1;"><span>آدرس مشتری:</span><span id="rcAddr1">---</span></div>
+                </div>
+                <table class="rc-table">
+                  <thead>
+                    <tr><th>نوع لیتر</th><th>مقدار</th><th>واحد</th><th>فی فروش (؋)</th><th>مبلغ کل (؋)</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td id="rcPkg1">---</td><td id="rcQty1">---</td><td id="rcUnit1">---</td>
+                      <td id="rcRate1">---</td><td id="rcAmount1">---</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="rc-summary">
+                  <div class="box"><div class="lbl">مبلغ کل</div><div class="val" id="rcSumTotal1">0</div></div>
+                  <div class="box"><div class="lbl">مبلغ خریداری</div><div class="val" id="rcSumBuy1">0</div></div>
+                  <div class="box"><div class="lbl">مفاد کل</div><div class="val" id="rcSumProfit1">0</div></div>
+                </div>
+                <div class="rc-info-grid" style="margin-top:4px;">
+                  <div class="row" style="grid-column:1/-1;"><span>ملاحظات:</span><span id="rcNotes1">---</span></div>
+                </div>
+                <div class="rc-sign">
+                  <div>امضاء فروشنده</div>
+                  <div>امضاء مشتری</div>
+                </div>
+              </div>
+              <div class="receipt-foot">
+                <span id="rcFooter1">طراحی: انجنیر سید مجیب الله امینیار</span>
+                <span id="rcPhoneFoot1">۰۷۹۰۹۹۰۶۹۶ - ۰۷۷۳۵۵۰۰۹۰</span>
+              </div>
+            </div>
+
+            <!-- BUYER RECEIPT -->
+            <div class="receipt-modern">
+              <div class="receipt-head">
+                <div class="logo-box">
+                  <img id="rcLogo2" src="" style="display:none;">
+                  <div class="title">
+                    <span id="rcShop2">فروشگاه نمونه</span>
+                    <small id="rcDb2">دیتابیس منظم</small>
+                  </div>
+                </div>
+                <div style="text-align:center;">
+                  <div style="font-size:.85rem; font-weight:800;">🧾 بل خریدار</div>
+                </div>
+                <div class="inv-no" id="rcInv2">INV-0000</div>
+              </div>
+              <div class="receipt-body">
+                <div class="rc-info-grid">
+                  <div class="row"><span>تاریخ:</span><span id="rcDate2">---</span></div>
+                  <div class="row"><span>شماره تماس:</span><span id="rcPhone2">---</span></div>
+                  <div class="row"><span>اسم مشتری:</span><span id="rcName2">---</span></div>
+                  <div class="row"><span>نوع لیتر:</span><span id="rcPkg2">---</span></div>
+                  <div class="row" style="grid-column:1/-1;"><span>آدرس:</span><span id="rcAddr2">---</span></div>
+                </div>
+                <table class="rc-table">
+                  <thead>
+                    <tr><th>مقدار</th><th>واحد</th><th>فی (؋)</th><th>مبلغ کل (؋)</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td id="rcQty2">---</td><td id="rcUnit2">---</td><td id="rcRate2">---</td>
+                      <td id="rcAmount2">---</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="rc-summary" style="grid-template-columns:repeat(2,1fr);">
+                  <div class="box"><div class="lbl">مجموعه پول پرداختی</div><div class="val" id="rcSumPay2">0</div></div>
+                  <div class="box"><div class="lbl">مجموعه لیتر خریداری</div><div class="val" id="rcSumLiters2">0</div></div>
+                </div>
+                <div class="rc-info-grid" style="margin-top:4px;">
+                  <div class="row" style="grid-column:1/-1;"><span>ملاحظات:</span><span id="rcNotes2">---</span></div>
+                </div>
+                <div class="rc-sign">
+                  <div>امضاء فروشنده</div>
+                  <div>امضاء خریدار</div>
+                </div>
+              </div>
+              <div class="receipt-foot">
+                <span id="rcFooter2">طراحی: انجنیر سید مجیب الله امینیار</span>
+                <span id="rcPhoneFoot2">۰۷۹۰۹۹۰۶۹۶ - ۰۷۷۳۵۵۰۰۹۰</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="section" id="tab-settings">
+      <h2>⚙️ تنظیمات و پشتیبان‌گیری</h2>
+
+      <!-- INSTALL SECTION -->
+      <div class="card" style="background:linear-gradient(135deg,#ede9fe,#dbeafe); border:2px solid #7c3aed;">
+        <h3 style="margin-bottom:14px; color:#5b21b6;">📲 نصب دیتابیس روی کمپیوتر</h3>
+        <p style="color:#4c1d95; line-height:1.8; margin-bottom:14px;">
+          با نصب این دیتابیس به عنوان یک برنامه، می‌توانید بدون نیاز به مرورگر و بدون اینترنت از آن استفاده کنید.
+        </p>
+        <div class="form-row">
+          <button class="btn install" onclick="installApp()" id="installBtnSettings">📲 نصب برنامه</button>
+          <button class="btn ghost" onclick="showInstallGuide()">📖 راهنمای نصب</button>
+        </div>
+        <p style="color:#6d28d9; font-size:.8rem; margin-top:10px;" id="installStatus">وضعیت: بررسی می‌شود...</p>
+        <div id="installWarning" style="display:none; background:#fef3c7; color:#92400e; padding:10px 14px; border-radius:8px; margin-top:12px; font-size:.85rem;">
+          ⚠️ توجه: برای نصب، فایل باید روی یک سرور (HTTPS) یا localhost اجرا شود.
+        </div>
+      </div>
+
+      <!-- ICON UPLOAD -->
+      <div class="card">
+        <h3 style="margin-bottom:14px;">🖼️ آیکن / لوگوی سیستم</h3>
+        <p style="color:var(--muted); font-size:.85rem; margin-bottom:14px;">
+          این آیکن در نوار بالا، صفحه خوش‌آمدگویی و بل رسیدها نمایش داده می‌شود.
+        </p>
+        <div class="icon-upload-box">
+          <img id="iconPreview" src="" alt="آیکن" onerror="this.style.background='#e2e8f0';">
+          <div style="flex:1;">
+            <input type="file" id="iconFile" accept="image/*" onchange="uploadIcon(event)" style="margin-bottom:8px;">
+            <button class="btn ghost small" onclick="removeIcon()">🗑️ حذف آیکن</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- WELCOME TEXT CUSTOMIZATION -->
+      <div class="card" style="background:linear-gradient(135deg,#fef3c7,#fde68a);">
+        <h3 style="margin-bottom:14px; color:#92400e;">✨ شخصی‌سازی متن‌های خوش‌آمدگویی</h3>
+        <p style="color:#78350f; font-size:.85rem; margin-bottom:14px;">
+          متن‌های صفحه خوش‌آمدگویی و صفحه ورود را می‌توانید به دلخواه تغییر دهید.
+        </p>
+        <div class="grid g2">
+          <div><label>متن بسم الله</label><input id="sBismillah" maxlength="100"></div>
+          <div><label>متن خوش‌آمدگویی اصلی</label><input id="sWelcomeTitle" maxlength="60"></div>
+          <div><label>زیرعنوان (به سیستم مدیریت)</label><input id="sWelcomeSub" maxlength="60"></div>
+          <div><label>نام فروشگاه / روغنیات</label><input id="sWelcomeOrg" maxlength="80"></div>
+          <div><label>نام مدیر در صفحه خوش‌آمدگویی</label><input id="sWelcomeManager" maxlength="80"></div>
+          <div><label>متن تماس در صفحه خوش‌آمدگویی</label><input id="sWelcomeContact" maxlength="100"></div>
+        </div>
+        <hr style="margin:16px 0; border:none; border-top:1px dashed #d97706;">
+        <h4 style="margin-bottom:12px; color:#92400e;">🔐 متن‌های صفحه ورود</h4>
+        <div class="grid g2">
+          <div><label>عنوان صفحه ورود</label><input id="sLoginTitle" maxlength="60"></div>
+          <div><label>زیرعنوان صفحه ورود</label><input id="sLoginSubtitle" maxlength="100"></div>
+        </div>
+        <div class="form-row" style="margin-top:16px;">
+          <button class="btn success" onclick="saveWelcomeSettings()">💾 ذخیره متن‌ها</button>
+          <button class="btn ghost" onclick="resetWelcomeSettings()">🔄 بازگشت به پیش‌فرض</button>
+        </div>
+      </div>
+
+      <!-- SYSTEM INFO -->
+      <div class="card">
+        <h3 style="margin-bottom:14px;">🏢 اطلاعات سیستم</h3>
+        <div class="grid g2">
+          <div><label>نام دیتابیس</label><input id="sDbName" maxlength="80"></div>
+          <div><label>نام فروشگاه / شرکت</label><input id="sShopName" maxlength="80"></div>
+          <div><label>سال مالی</label><input id="sYear" maxlength="4"></div>
+          <div><label>واحد پول</label><input id="sCurrency" maxlength="20"></div>
+          <div><label>نام مدیر</label><input id="sManager" maxlength="80"></div>
+          <div><label>شماره تماس</label><input id="sPhone" maxlength="30"></div>
+        </div>
+        <div class="form-row">
+          <button class="btn success" onclick="saveSettings()">💾 ذخیره تنظیمات</button>
+        </div>
+      </div>
+
+      <!-- SECURITY -->
+      <div class="card">
+        <h3 style="margin-bottom:14px;">🔒 امنیت</h3>
+        <div class="grid g2">
+          <div><label>زمان انقضای جلسه (دقیقه)</label><input type="number" id="sSessionTimeout" min="5" max="240" value="30"></div>
+          <div><label>حداکثر تلاش ورود</label><input type="number" id="sMaxAttempts" min="3" max="10" value="5"></div>
+        </div>
+        <div class="form-row">
+          <button class="btn success" onclick="saveSecurity()">💾 ذخیره امنیت</button>
+        </div>
+      </div>
+
+      <!-- BACKUP -->
+      <div class="card">
+        <h3 style="margin-bottom:14px;">💾 پشتیبان‌گیری و بازیابی</h3>
+        <div class="form-row">
+          <button class="btn success" onclick="backupJSON()">📥 دانلود پشتیبان (JSON)</button>
+          <button class="btn" onclick="exportAllCSV()">📄 خروجی کامل CSV</button>
+          <button class="btn warning" onclick="document.getElementById('restoreFile').click()">📤 بازیابی از فایل</button>
+          <input type="file" id="restoreFile" accept=".json" style="display:none;" onchange="restoreJSON(event)">
+          <button class="btn danger" onclick="resetAll()">🗑️ ریست کامل سیستم</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-bottom:14px;">📞 اطلاعات طراح</h3>
+        <p style="line-height:2;">
+          <strong>طراحی دیتابیس:</strong> انجنیر سید مجیب الله امینیار<br>
+          <strong>شماره تماس:</strong> ۰۷۹۰۹۹۰۶۹۶ - ۰۷۷۳۵۵۰۰۹۰ - ۰۷۸۲۳۲۷۰۷۳
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    طراحی دیتابیس: انجنیر سید مجیب الله امینیار | ۰۷۹۰۹۹۰۶۹۶ - ۰۷۷۳۵۵۰۰۹۰ - ۰۷۸۲۳۲۷۰۷۳
+  </div>
+</div>
+
+<!-- INSTALL GUIDE MODAL -->
+<div class="modal-bg" id="installGuideModal">
+  <div class="modal">
+    <h2 style="margin-bottom:16px; color:var(--primary);">📲 راهنمای نصب دیتابیس</h2>
+    <div class="install-guide">
+      <div class="note">
+        ⚠️ <strong>مهم:</strong> برای نصب خودکار، فایل باید روی یک سرور (HTTPS) یا <code>localhost</code> اجرا شود.
+      </div>
+
+      <h3>🌐 روش اول: نصب خودکار (Chrome / Edge) - با سرور</h3>
+      <ol>
+        <li>سایت را روی یک سرور HTTPS یا localhost باز کنید.</li>
+        <li>روی دکمه <strong>📲 نصب برنامه</strong> کلیک کنید.</li>
+        <li>یا از منوی مرورگر (سه نقطه) گزینه <strong>«نصب برنامه»</strong> را انتخاب کنید.</li>
+      </ol>
+
+      <h3 style="margin-top:20px;">🍎 روش دوم: نصب در iPhone / iPad (Safari)</h3>
+      <ol>
+        <li>سایت را در مرورگر <strong>Safari</strong> باز کنید.</li>
+        <li>روی دکمه <strong>اشتراک‌گذاری</strong> کلیک کنید.</li>
+        <li>گزینه <strong>«Add to Home Screen»</strong> را انتخاب کنید.</li>
+      </ol>
+
+      <h3 style="margin-top:20px;">🤖 روش سوم: نصب در Android (Chrome)</h3>
+      <ol>
+        <li>سایت را در مرورگر <strong>Chrome</strong> باز کنید.</li>
+        <li>روی منوی سه نقطه کلیک کنید.</li>
+        <li>گزینه <strong>«Install App»</strong> را انتخاب کنید.</li>
+      </ol>
+
+      <h3 style="margin-top:20px;">🖥️ روش چهارم: اجرای فایل روی کمپیوتر بدون سرور</h3>
+      <ol>
+        <li>فایل HTML را در پوشه‌ای قرار دهید.</li>
+        <li>روی فایل دوبار کلیک کنید تا در مرورگر باز شود.</li>
+        <li>در Chrome، منوی سه نقطه → <strong>«More Tools»</strong> → <strong>«Create Shortcut»</strong></li>
+        <li>گزینه <strong>«Open as window»</strong> را تیک بزنید و <strong>«Create»</strong> را بزنید.</li>
+      </ol>
+    </div>
+    <div class="form-row" style="justify-content:flex-end; margin-top:20px;">
+      <button class="btn" onclick="document.getElementById('installGuideModal').classList.remove('show')">بستن</button>
+    </div>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+/* ============================================================
+   PWA INSTALL LOGIC
+============================================================ */
+let deferredPrompt = null;
+let isInstalled = false;
+
+if(window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true){
+  isInstalled = true;
+}
+
+if('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')){
+  const swCode = `
+    const CACHE_NAME = 'db-manager-v2';
+    self.addEventListener('install', event => { self.skipWaiting(); });
+    self.addEventListener('activate', event => { event.waitUntil(self.clients.claim()); });
+    self.addEventListener('fetch', event => {
+      event.respondWith(caches.match(event.request).then(response => response || fetch(event.request).catch(() => caches.match('./'))));
+    });
+  `;
+  try{
+    const blob = new Blob([swCode], {type:'application/javascript'});
+    const swUrl = URL.createObjectURL(blob);
+    navigator.serviceWorker.register(swUrl).catch(()=>{});
+  }catch(e){}
+}
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  updateInstallUI();
+  if(!isInstalled && !localStorage.getItem('installDismissed')){
+    setTimeout(()=>document.getElementById('installBanner').classList.add('show'), 3000);
+  }
+});
+
+window.addEventListener('appinstalled', () => {
+  isInstalled = true;
+  deferredPrompt = null;
+  document.getElementById('installBanner').classList.remove('show');
+  updateInstallUI();
+  toast('🎉 برنامه با موفقیت نصب شد!');
+});
+
+function updateInstallUI(){
+  const btn = document.getElementById('installBtnSettings');
+  const status = document.getElementById('installStatus');
+  const warning = document.getElementById('installWarning');
+  if(!btn || !status) return;
+  const isSecure = (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1');
+  if(isInstalled){
+    btn.textContent = '✅ نصب شده'; btn.disabled = true; btn.style.opacity = '0.7';
+    status.textContent = 'وضعیت: برنامه روی این دستگاه نصب است ✓'; status.style.color = '#16a34a';
+    if(warning) warning.style.display = 'none';
+  } else if(deferredPrompt){
+    btn.textContent = '📲 نصب برنامه'; btn.disabled = false; btn.style.opacity = '1';
+    status.textContent = 'وضعیت: آماده نصب ✓ روی دکمه نصب کلیک کنید.'; status.style.color = '#7c3aed';
+    if(warning) warning.style.display = 'none';
+  } else {
+    btn.textContent = '📲 نصب برنامه'; btn.disabled = false;
+    status.textContent = isSecure ? 'وضعیت: از راهنمای نصب استفاده کنید.' : 'وضعیت: برای نصب، فایل باید روی سرور اجرا شود.';
+    status.style.color = '#6d28d9';
+    if(warning && !isSecure) warning.style.display = 'block';
+  }
+}
+
+async function installApp(){
+  if(isInstalled){ toast('برنامه قبلاً نصب شده است ✓'); return; }
+  if(deferredPrompt){
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if(outcome === 'accepted') toast('در حال نصب برنامه...');
+    else toast('نصب لغو شد', true);
+    deferredPrompt = null;
+    updateInstallUI();
+  } else {
+    showInstallGuide();
+  }
+}
+
+function dismissInstall(){
+  document.getElementById('installBanner').classList.remove('show');
+  localStorage.setItem('installDismissed', '1');
+}
+
+function showInstallGuide(){
+  document.getElementById('installGuideModal').classList.add('show');
+}
+
+/* ============================================================
+   SECURITY LAYER
+============================================================ */
+const Security = {
+  maxAttempts: 5,
+  lockDuration: 5*60*1000,
+  sessionTimeout: 30*60*1000,
+
+  async hash(text){
+    const enc = new TextEncoder().encode(text);
+    const buf = await crypto.subtle.digest('SHA-256', enc);
+    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  },
+
+  sanitize(str){
+    if(typeof str !== 'string') return str;
+    return str.replace(/[<>"'`]/g, c=>({'<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;','`':'&#96;'}[c]));
+  },
+
+  recordFailedAttempt(username){
+    const key = 'failed_'+username;
+    let data = JSON.parse(localStorage.getItem(key) || '{"count":0,"lockUntil":0}');
+    data.count = (data.count||0) + 1;
+    if(data.count >= this.maxAttempts){ data.lockUntil = Date.now() + this.lockDuration; data.count = 0; }
+    localStorage.setItem(key, JSON.stringify(data));
+  },
+
+  isLocked(username){
+    const key = 'failed_'+username;
+    const data = JSON.parse(localStorage.getItem(key) || '{"count":0,"lockUntil":0}');
+    if(data.lockUntil && Date.now() < data.lockUntil){
+      const remain = Math.ceil((data.lockUntil - Date.now())/1000);
+      return { locked:true, remain };
+    }
+    if(data.lockUntil && Date.now() >= data.lockUntil) localStorage.removeItem(key);
+    return { locked:false };
+  },
+
+  resetAttempts(username){ localStorage.removeItem('failed_'+username); },
+
+  generateToken(){
+    const arr = new Uint8Array(16);
+    crypto.getRandomValues(arr);
+    return Array.from(arr).map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+};
+
+/* ============================================================
+   STATE & STORAGE
+============================================================ */
+let CURRENT_USER_KEY = 'default';
+
+function storageKey(base){ return 'adv_' + base + '_' + CURRENT_USER_KEY; }
+
+const DB = {
+  customers: [],
+  expenses: [],
+  partners: [],
+  users: [],
+  settings: {
+    dbName:'دیتابیس منظم', shopName:'فروشگاه روغنیات', year:'1403',
+    currency:'افغانی', manager:'انجنیر سید مجیب الله امینیار', phone:'۰۷۹۰۹۹۰۶۹۶',
+    logo:'', sessionTimeout:30, maxAttempts:5,
+    // Welcome texts
+    bismillah:'بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ',
+    welcomeTitle:'خوش آمدید',
+    welcomeSub:'به سیستم مدیریت',
+    welcomeOrg:'روغنیات و فروشگاه',
+    welcomeManager:'انجنیر سید مجیب الله امینیار',
+    welcomeContact:'۰۷۹۰۹۹۰۶۹۶ - ۰۷۷۳۵۵۰۰۹۰',
+    loginTitle:'ورود امن به سیستم',
+    loginSubtitle:'لطفاً نام کاربری و رمز عبور خود را وارد کنید'
+  }
+};
+
+function loadUserData(username){
+  CURRENT_USER_KEY = username;
+  DB.customers = JSON.parse(localStorage.getItem(storageKey('customers'))) || [];
+  DB.expenses  = JSON.parse(localStorage.getItem(storageKey('expenses')))  || [];
+  DB.partners  = JSON.parse(localStorage.getItem(storageKey('partners')))  || [];
+  DB.users     = JSON.parse(localStorage.getItem('adv_users')) || [];
+  const savedSettings = JSON.parse(localStorage.getItem('adv_settings'));
+  if(savedSettings){
+    DB.settings = Object.assign({}, DB.settings, savedSettings);
+  }
+  Security.maxAttempts = DB.settings.maxAttempts || 5;
+}
+
+function save(){
+  localStorage.setItem(storageKey('customers'), JSON.stringify(DB.customers));
+  localStorage.setItem(storageKey('expenses'),  JSON.stringify(DB.expenses));
+  localStorage.setItem(storageKey('partners'),  JSON.stringify(DB.partners));
+  localStorage.setItem('adv_users',     JSON.stringify(DB.users));
+  localStorage.setItem('adv_settings',  JSON.stringify(DB.settings));
+}
+
+let chartInstance = null;
+let editingUserIndex = -1;
+let tempImage = '';
+let sessionTimer = null;
+let tempIcon = '';
+
+/* ============================================================
+   APPLY WELCOME TEXTS
+============================================================ */
+function applyWelcomeTexts(){
+  const S = DB.settings;
+  const b = document.getElementById('wBismillah');
+  const t = document.getElementById('wTitle');
+  const sub = document.getElementById('wSub');
+  const org = document.getElementById('wOrg');
+  const mgr = document.getElementById('wManager');
+  const contact = document.getElementById('wContact');
+  const lt = document.getElementById('loginTitle');
+  const ls = document.getElementById('loginSubtitle');
+  const wIcon = document.getElementById('wIcon');
+
+  if(b) b.textContent = S.bismillah || 'بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ';
+  if(t) t.textContent = S.welcomeTitle || 'خوش آمدید';
+  if(sub) sub.textContent = S.welcomeSub || 'به سیستم مدیریت';
+  if(org) org.textContent = S.welcomeOrg || 'روغنیات و فروشگاه';
+  if(mgr) mgr.textContent = S.welcomeManager || '';
+  if(contact) contact.innerHTML = `<strong>تماس:</strong> ${S.welcomeContact || ''}<br><span style="font-size:.75rem;">در حال بارگذاری سیستم...</span>`;
+  if(lt) lt.textContent = S.loginTitle || 'ورود امن به سیستم';
+  if(ls) ls.textContent = S.loginSubtitle || 'لطفاً نام کاربری و رمز عبور خود را وارد کنید';
+
+  // Icon in welcome screen
+  if(wIcon){
+    if(S.logo){
+      wIcon.innerHTML = `<img src="${S.logo}" alt="آیکن">`;
+    } else {
+      wIcon.innerHTML = '🛢️';
+    }
+  }
+}
+
+/* ============================================================
+   AUTO CODE GENERATOR
+============================================================ */
+function generateInvoiceCode(){
+  const year = DB.settings.year || '1403';
+  let max = 0;
+  DB.customers.forEach(c=>{
+    if(c.invoice && c.invoice.startsWith('INV-'+year+'-')){
+      const n = parseInt(c.invoice.split('-')[2]);
+      if(!isNaN(n) && n > max) max = n;
+    }
+  });
+  return 'INV-' + year + '-' + String(max+1).padStart(4,'0');
+}
+
+/* ============================================================
+   LOGIN / AUTH
+============================================================ */
+async function doLogin(){
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+  const lockMsg = document.getElementById('lockMsg');
+  lockMsg.innerHTML = '';
+
+  if(!u || !p){ toast('نام کاربری و رمز را وارد کنید', true); return; }
+
+  const lock = Security.isLocked(u);
+  if(lock.locked){
+    lockMsg.innerHTML = `<div class="lock-warn">🔒 حساب شما قفل است. ${lock.remain} ثانیه دیگر تلاش کنید.</div>`;
+    return;
+  }
+
+  const allUsers = JSON.parse(localStorage.getItem('adv_users')) || [];
+  const user = allUsers.find(x=>x.name===u);
+  if(!user){ Security.recordFailedAttempt(u); toast('نام کاربری یا رمز اشتباه است', true); return; }
+
+  const hashedPass = await Security.hash(p);
+  const valid = (user.pass === p) || (user.passHash === hashedPass);
+
+  if(!valid){ Security.recordFailedAttempt(u); toast('نام کاربری یا رمز اشتباه است', true); return; }
+
+  if(!user.passHash){
+    user.passHash = hashedPass; user.pass = '';
+    localStorage.setItem('adv_users', JSON.stringify(allUsers));
+  }
+  if(user.pass === p){
+    user.pass = ''; user.passHash = hashedPass;
+    localStorage.setItem('adv_users', JSON.stringify(allUsers));
+  }
+
+  Security.resetAttempts(u);
+
+  const sessionData = { name: user.name, role: user.role, token: Security.generateToken(), loginTime: Date.now() };
+  sessionStorage.setItem('loggedUser', JSON.stringify(sessionData));
+
+  loadUserData(user.name);
+
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('app').style.display='block';
+  document.getElementById('topUser').textContent = user.name;
+  initApp();
+  startSessionTimer();
+  toast('خوش آمدید '+user.name+' 🌹');
+}
+
+function logout(){
+  if(sessionTimer) clearInterval(sessionTimer);
+  sessionStorage.removeItem('loggedUser');
+  location.reload();
+}
+
+function startSessionTimer(){
+  if(sessionTimer) clearInterval(sessionTimer);
+  const timeout = (DB.settings.sessionTimeout || 30) * 60 * 1000;
+  let lastActivity = Date.now();
+  ['click','keydown','mousemove','touchstart'].forEach(ev=>{
+    document.addEventListener(ev, ()=>{ lastActivity = Date.now(); }, {passive:true});
+  });
+  sessionTimer = setInterval(()=>{
+    if(Date.now() - lastActivity > timeout){
+      toast('جلسه منقضی شد. لطفاً دوباره وارد شوید.', true);
+      setTimeout(logout, 1500);
+    }
+  }, 30000);
+}
+
+/* ============================================================
+   INIT
+============================================================ */
+function initApp(){
+  // System info
+  document.getElementById('sDbName').value = DB.settings.dbName || '';
+  document.getElementById('sShopName').value = DB.settings.shopName || '';
+  document.getElementById('sYear').value = DB.settings.year || '';
+  document.getElementById('sCurrency').value = DB.settings.currency || '';
+  document.getElementById('sManager').value = DB.settings.manager || '';
+  document.getElementById('sPhone').value = DB.settings.phone || '';
+  document.getElementById('sSessionTimeout').value = DB.settings.sessionTimeout || 30;
+  document.getElementById('sMaxAttempts').value = DB.settings.maxAttempts || 5;
+
+  // Welcome texts
+  document.getElementById('sBismillah').value = DB.settings.bismillah || '';
+  document.getElementById('sWelcomeTitle').value = DB.settings.welcomeTitle || '';
+  document.getElementById('sWelcomeSub').value = DB.settings.welcomeSub || '';
+  document.getElementById('sWelcomeOrg').value = DB.settings.welcomeOrg || '';
+  document.getElementById('sWelcomeManager').value = DB.settings.welcomeManager || '';
+  document.getElementById('sWelcomeContact').value = DB.settings.welcomeContact || '';
+  document.getElementById('sLoginTitle').value = DB.settings.loginTitle || '';
+  document.getElementById('sLoginSubtitle').value = DB.settings.loginSubtitle || '';
+
+  // Icon preview
+  if(DB.settings.logo){
+    document.getElementById('iconPreview').src = DB.settings.logo;
+    document.getElementById('brandLogo').src = DB.settings.logo;
+    document.getElementById('brandLogo').style.display='block';
+  } else {
+    document.getElementById('iconPreview').src = '';
+  }
+
+  document.getElementById('brandTitle').textContent = DB.settings.shopName || 'سیستم مدیریت';
+  document.getElementById('brandSub').textContent = DB.settings.manager || '';
+
+  refreshDates();
+
+  document.querySelectorAll('.tab').forEach(t=>{
+    t.onclick = ()=>{
+      document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+      document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');
+      document.getElementById('tab-'+t.dataset.tab).classList.add('active');
+      if(t.dataset.tab==='dashboard') renderDashboard();
+      if(t.dataset.tab==='receipt') renderReceipt();
+      if(t.dataset.tab==='customers') { setNewInvoiceCode(); refreshDates(); }
+      if(t.dataset.tab==='expenses') { refreshDates(); calcExpenseTotal(); }
+      if(t.dataset.tab==='settings') { updateInstallUI(); }
+    };
+  });
+
+  ['cQty','cRate','cBuyRate','cUnit'].forEach(id=>{
+    const el = document.getElementById(id);
+    el.addEventListener('input', calcCustomerTotals);
+    el.addEventListener('change', calcCustomerTotals);
+  });
+
+  ['eRent','eElectric','eTransport','eSalary','eOther'].forEach(id=>{
+    document.getElementById(id).addEventListener('input', calcExpenseTotal);
+  });
+
+  ['pRent','pElectric','pTransport','pSalary','pOther'].forEach(id=>{
+    document.getElementById(id).addEventListener('input', calcPartnerTotals);
+  });
+
+  renderAll();
+  renderMonthBtns();
+  startClock();
+  setNewInvoiceCode();
+  calcExpenseTotal();
+  updateInstallUI();
+}
+
+function setNewInvoiceCode(){
+  document.getElementById('cInvoice').value = generateInvoiceCode();
+}
+
+/* ============================================================
+   AUTO DATE & TIME
+============================================================ */
+function refreshDates(){
+  const today = getShamsiDate();
+  const cD = document.getElementById('cDate');
+  const eD = document.getElementById('eDate');
+  if(cD) cD.value = today;
+  if(eD) eD.value = today;
+}
+
+function resetReportDates(){
+  const year = DB.settings.year || '1403';
+  document.getElementById('rFrom').value = year + '/01/01';
+  document.getElementById('rTo').value   = getShamsiDate();
+  toast('تاریخ‌های راپور تنظیم شد');
+}
+
+function startClock(){
+  updateClock();
+  setInterval(updateClock, 1000);
+}
+function updateClock(){
+  const today = getShamsiDate();
+  const dEl = document.getElementById('topDate');
+  const tEl = document.getElementById('topTime');
+  if(dEl) dEl.textContent = today;
+  if(tEl) tEl.textContent = getTime12();
+  refreshDates();
+}
+
+/* ============================================================
+   SHAMSI (JALALI) DATE
+============================================================ */
+function gregorianToJalali(gy, gm, gd){
+  const g_d_m = [0,31,59,90,120,151,181,212,243,273,304,334];
+  let jy;
+  if(gy > 1600){ jy = 979; gy -= 1600; }
+  else { jy = 0; gy -= 621; }
+  const gy2 = (gm > 2) ? (gy + 1) : gy;
+  let days = (365*gy) + Math.floor((gy2 + 3)/4) - Math.floor((gy2 + 99)/100)
+           + Math.floor((gy2 + 399)/400) - 80 + gd + g_d_m[gm-1];
+  jy += 33 * Math.floor(days/12053);
+  days %= 12053;
+  jy += 4 * Math.floor(days/1461);
+  days %= 1461;
+  if(days > 365){ jy += Math.floor((days-1)/365); days = (days-1) % 365; }
+  const jm = (days < 186) ? 1 + Math.floor(days/31) : 7 + Math.floor((days-186)/30);
+  const jd = 1 + ((days < 186) ? (days % 31) : ((days-186) % 30));
+  return [jy, jm, jd];
+}
+
+function getShamsiDate(){
+  const now = new Date();
+  const [jy, jm, jd] = gregorianToJalali(now.getFullYear(), now.getMonth()+1, now.getDate());
+  return `${jy}/${String(jm).padStart(2,'0')}/${String(jd).padStart(2,'0')}`;
+}
+function getTime12(){
+  const d = new Date();
+  let h = d.getHours();
+  const m = String(d.getMinutes()).padStart(2,'0');
+  const s = String(d.getSeconds()).padStart(2,'0');
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12; h = h ? h : 12;
+  return `${String(h).padStart(2,'0')}:${m}:${s} ${ampm}`;
+}
+function fmt(n){
+  n = parseFloat(n)||0;
+  return n.toLocaleString('fa-AF',{maximumFractionDigits:2});
+}
+function toast(msg, err=false){
+  const t = document.createElement('div');
+  t.className = 'toast'+(err?' error':'');
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(), 2800);
+}
+function toggleTheme(){
+  const cur = document.documentElement.getAttribute('data-theme');
+  document.documentElement.setAttribute('data-theme', cur==='dark'?'light':'dark');
+}
+
+/* ============================================================
+   ICON UPLOAD
+============================================================ */
+function uploadIcon(e){
+  const f = e.target.files[0]; if(!f) return;
+  if(f.size > 1024*500){ toast('حجم آیکن باید کمتر از ۵۰۰KB باشد', true); return; }
+  const r = new FileReader();
+  r.onload = ev => {
+    tempIcon = ev.target.result;
+    DB.settings.logo = tempIcon;
+    document.getElementById('iconPreview').src = tempIcon;
+    document.getElementById('brandLogo').src = tempIcon;
+    document.getElementById('brandLogo').style.display='block';
+    // update welcome icon
+    const wIcon = document.getElementById('wIcon');
+    if(wIcon) wIcon.innerHTML = `<img src="${tempIcon}" alt="آیکن">`;
+    save();
+    toast('آیکن سیستم ذخیره شد ✓');
+  };
+  r.readAsDataURL(f);
+}
+
+function removeIcon(){
+  if(!confirm('آیکن حذف شود؟')) return;
+  DB.settings.logo = '';
+  document.getElementById('iconPreview').src = '';
+  document.getElementById('brandLogo').style.display='none';
+  const wIcon = document.getElementById('wIcon');
+  if(wIcon) wIcon.innerHTML = '🛢️';
+  save();
+  toast('آیکن حذف شد');
+}
+
+/* ============================================================
+   WELCOME SETTINGS
+============================================================ */
+function saveWelcomeSettings(){
+  DB.settings.bismillah = Security.sanitize(document.getElementById('sBismillah').value);
+  DB.settings.welcomeTitle = Security.sanitize(document.getElementById('sWelcomeTitle').value);
+  DB.settings.welcomeSub = Security.sanitize(document.getElementById('sWelcomeSub').value);
+  DB.settings.welcomeOrg = Security.sanitize(document.getElementById('sWelcomeOrg').value);
+  DB.settings.welcomeManager = Security.sanitize(document.getElementById('sWelcomeManager').value);
+  DB.settings.welcomeContact = Security.sanitize(document.getElementById('sWelcomeContact').value);
+  DB.settings.loginTitle = Security.sanitize(document.getElementById('sLoginTitle').value);
+  DB.settings.loginSubtitle = Security.sanitize(document.getElementById('sLoginSubtitle').value);
+  save();
+  applyWelcomeTexts();
+  toast('متن‌های خوش‌آمدگویی ذخیره شد ✓');
+}
+
+function resetWelcomeSettings(){
+  if(!confirm('متن‌ها به حالت پیش‌فرض برگردانده شوند؟')) return;
+  DB.settings.bismillah = 'بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ';
+  DB.settings.welcomeTitle = 'خوش آمدید';
+  DB.settings.welcomeSub = 'به سیستم مدیریت';
+  DB.settings.welcomeOrg = 'روغنیات و فروشگاه';
+  DB.settings.welcomeManager = 'انجنیر سید مجیب الله امینیار';
+  DB.settings.welcomeContact = '۰۷۹۰۹۹۰۶۹۶ - ۰۷۷۳۵۵۰۰۹۰';
+  DB.settings.loginTitle = 'ورود امن به سیستم';
+  DB.settings.loginSubtitle = 'لطفاً نام کاربری و رمز عبور خود را وارد کنید';
+  document.getElementById('sBismillah').value = DB.settings.bismillah;
+  document.getElementById('sWelcomeTitle').value = DB.settings.welcomeTitle;
+  document.getElementById('sWelcomeSub').value = DB.settings.welcomeSub;
+  document.getElementById('sWelcomeOrg').value = DB.settings.welcomeOrg;
+  document.getElementById('sWelcomeManager').value = DB.settings.welcomeManager;
+  document.getElementById('sWelcomeContact').value = DB.settings.welcomeContact;
+  document.getElementById('sLoginTitle').value = DB.settings.loginTitle;
+  document.getElementById('sLoginSubtitle').value = DB.settings.loginSubtitle;
+  save();
+  applyWelcomeTexts();
+  toast('متن‌ها به پیش‌فرض بازگشت ✓');
+}
+
+/* ============================================================
+   CUSTOMERS
+============================================================ */
+function calcCustomerTotals(){
+  const qty = parseFloat(document.getElementById('cQty').value)||0;
+  const rate = parseFloat(document.getElementById('cRate').value)||0;
+  const buyRate = parseFloat(document.getElementById('cBuyRate').value)||0;
+  const totalSale = qty * rate;
+  const totalBuy  = qty * buyRate;
+  const profitPerUnit = rate - buyRate;
+  const profitTotal = totalSale - totalBuy;
+  document.getElementById('cTotalAmount').value = fmt(totalSale)+' '+DB.settings.currency;
+  document.getElementById('cBuyAmount').value  = fmt(totalBuy)+' '+DB.settings.currency;
+  document.getElementById('cProfitPerUnit').value = fmt(profitPerUnit)+' '+DB.settings.currency;
+  document.getElementById('cProfitTotal').value = fmt(profitTotal)+' '+DB.settings.currency;
+}
+function saveCustomer(){
+  const qty = parseFloat(document.getElementById('cQty').value)||0;
+  const unit = document.getElementById('cUnit').value;
+  const rate = parseFloat(document.getElementById('cRate').value)||0;
+  const buyRate = parseFloat(document.getElementById('cBuyRate').value)||0;
+  const c = {
+    invoice: document.getElementById('cInvoice').value,
+    name: Security.sanitize(document.getElementById('cName').value.trim()),
+    address: Security.sanitize(document.getElementById('cAddress').value.trim()),
+    phone: Security.sanitize(document.getElementById('cPhone').value.trim()),
+    date: getShamsiDate(),
+    package: Security.sanitize(document.getElementById('cPackage').value.trim()),
+    qty: qty, unit: unit, rate: rate, buyRate: buyRate,
+    notes: Security.sanitize(document.getElementById('cNotes').value.trim()),
+    totalAmount: qty*rate, buyAmount: qty*buyRate,
+    profitPerUnit: rate-buyRate, profitTotal: (qty*rate)-(qty*buyRate)
+  };
+  if(!c.name){ toast('اسم مشتری الزامی است', true); return; }
+  if(qty <= 0){ toast('مقدار باید بزرگتر از صفر باشد', true); return; }
+  DB.customers.push(c);
+  save(); renderCustomers(); clearCustomerForm();
+  toast('مشتری با شماره بل '+c.invoice+' ذخیره شد ✓');
+}
+function clearCustomerForm(){
+  ['cName','cAddress','cPhone','cPackage','cQty','cRate','cBuyRate','cNotes','cTotalAmount','cBuyAmount','cProfitPerUnit','cProfitTotal'].forEach(id=>{
+    document.getElementById(id).value='';
+  });
+  document.getElementById('cDate').value = getShamsiDate();
+  document.getElementById('cUnit').value = 'لیتر';
+  setNewInvoiceCode();
+}
+function renderCustomers(){
+  const search = (document.getElementById('searchCust')?.value||'').toLowerCase();
+  const tbody = document.querySelector('#tblCustomers tbody');
+  tbody.innerHTML = '';
+  const list = DB.customers.filter(c=>!search || JSON.stringify(c).toLowerCase().includes(search));
+  if(list.length===0){ tbody.innerHTML='<tr><td colspan="17" class="empty">هیچ مشتری یافت نشد</td></tr>'; return; }
+  list.forEach(c=>{
+    const idx = DB.customers.indexOf(c);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${idx+1}</td>
+      <td><b style="color:var(--success);">${c.invoice||''}</b></td>
+      <td>${c.name||''}</td><td>${c.address||''}</td><td>${c.phone||''}</td>
+      <td>${c.date||''}</td><td>${c.package||''}</td><td>${c.qty||''}</td><td>${c.unit||''}</td>
+      <td>${fmt(c.rate)}</td><td>${fmt(c.buyRate)}</td>
+      <td>${fmt(c.totalAmount)}</td><td>${fmt(c.buyAmount)}</td>
+      <td>${fmt(c.profitPerUnit)}</td><td><b style="color:var(--success);">${fmt(c.profitTotal)}</b></td>
+      <td>${c.notes||''}</td>
+      <td>
+        <button class="btn small" onclick="editCustomer(${idx})">✏️</button>
+        <button class="btn small danger" onclick="delCustomer(${idx})">🗑️</button>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+}
+function editCustomer(idx){
+  const c = DB.customers[idx];
+  document.getElementById('cInvoice').value = c.invoice||'';
+  document.getElementById('cName').value = c.name||'';
+  document.getElementById('cAddress').value = c.address||'';
+  document.getElementById('cPhone').value = c.phone||'';
+  document.getElementById('cDate').value = c.date||getShamsiDate();
+  document.getElementById('cPackage').value = c.package||'';
+  document.getElementById('cQty').value = c.qty||'';
+  document.getElementById('cUnit').value = c.unit||'لیتر';
+  document.getElementById('cRate').value = c.rate||'';
+  document.getElementById('cBuyRate').value = c.buyRate||'';
+  document.getElementById('cNotes').value = c.notes||'';
+  calcCustomerTotals();
+  DB.customers.splice(idx,1);
+  save(); renderCustomers();
+  toast('برای ویرایش، اطلاعات را اصلاح و ذخیره کنید');
+}
+function delCustomer(idx){
+  if(!confirm('حذف شود؟')) return;
+  DB.customers.splice(idx,1); save(); renderCustomers(); renderDashboard();
+  toast('حذف شد');
+}
+
+/* ============================================================
+   EXPENSES
+============================================================ */
+function calcExpenseTotal(){
+  const rent = parseFloat(document.getElementById('eRent').value)||0;
+  const electric = parseFloat(document.getElementById('eElectric').value)||0;
+  const transport = parseFloat(document.getElementById('eTransport').value)||0;
+  const salary = parseFloat(document.getElementById('eSalary').value)||0;
+  const other = parseFloat(document.getElementById('eOther').value)||0;
+  const total = rent + electric + transport + salary + other;
+  document.getElementById('eTotalExp').value = fmt(total)+' '+DB.settings.currency;
+}
+
+function saveExpense(){
+  const e = {
+    date: getShamsiDate(),
+    rent: parseFloat(document.getElementById('eRent').value)||0,
+    electric: parseFloat(document.getElementById('eElectric').value)||0,
+    transport: parseFloat(document.getElementById('eTransport').value)||0,
+    salary: parseFloat(document.getElementById('eSalary').value)||0,
+    otherSubject: Security.sanitize(document.getElementById('eOtherSubject').value.trim()),
+    other: parseFloat(document.getElementById('eOther').value)||0
+  };
+  DB.expenses.push(e); save(); renderExpenses(); clearExpenseForm();
+  toast('مصارفات ذخیره شد ✓');
+}
+function clearExpenseForm(){
+  ['eRent','eElectric','eTransport','eSalary','eOtherSubject','eOther','eTotalExp'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('eDate').value = getShamsiDate();
+}
+function renderExpenses(){
+  const tbody = document.getElementById('tblExpenses');
+  tbody.innerHTML = '';
+  if(DB.expenses.length===0){ tbody.innerHTML='<tr><td colspan="10" class="empty">هیچ موردی ثبت نشده</td></tr>'; return; }
+  DB.expenses.forEach((e,i)=>{
+    const total = e.rent+e.electric+e.transport+e.salary+e.other;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${i+1}</td><td>${e.date||''}</td>
+      <td>${fmt(e.rent)}</td><td>${fmt(e.electric)}</td><td>${fmt(e.transport)}</td>
+      <td>${fmt(e.salary)}</td><td>${e.otherSubject||''}</td><td>${fmt(e.other)}</td>
+      <td><b style="color:var(--danger);">${fmt(total)}</b></td>
+      <td><button class="btn small danger" onclick="delExpense(${i})">🗑️</button></td>`;
+    tbody.appendChild(tr);
+  });
+}
+function delExpense(i){ if(confirm('حذف شود؟')){ DB.expenses.splice(i,1); save(); renderExpenses(); renderDashboard(); } }
+
+/* ============================================================
+   PARTNERS
+============================================================ */
+function calcPartnerTotals(){
+  const rent = parseFloat(document.getElementById('pRent').value)||0;
+  const electric = parseFloat(document.getElementById('pElectric').value)||0;
+  const transport = parseFloat(document.getElementById('pTransport').value)||0;
+  const salary = parseFloat(document.getElementById('pSalary').value)||0;
+  const other = parseFloat(document.getElementById('pOther').value)||0;
+  const totalExp = rent + electric + transport + salary + other;
+  document.getElementById('pTotalExp').value = fmt(totalExp)+' '+DB.settings.currency;
+}
+function savePartner(){
+  const rent = parseFloat(document.getElementById('pRent').value)||0;
+  const electric = parseFloat(document.getElementById('pElectric').value)||0;
+  const transport = parseFloat(document.getElementById('pTransport').value)||0;
+  const salary = parseFloat(document.getElementById('pSalary').value)||0;
+  const other = parseFloat(document.getElementById('pOther').value)||0;
+  const p = {
+    name: Security.sanitize(document.getElementById('pName').value.trim()),
+    phone: Security.sanitize(document.getElementById('pPhone').value.trim()),
+    subject: Security.sanitize(document.getElementById('pSubject').value.trim()),
+    rent, electric, transport, salary, other,
+    totalExp: rent + electric + transport + salary + other
+  };
+  if(!p.name){ toast('اسم شریک الزامی است', true); return; }
+  DB.partners.push(p); save(); renderPartners(); clearPartnerForm();
+  toast('شراکت ذخیره شد ✓');
+}
+function clearPartnerForm(){
+  ['pName','pPhone','pSubject','pRent','pElectric','pTransport','pSalary','pOther','pTotalExp'].forEach(id=>{
+    document.getElementById(id).value='';
+  });
+}
+function renderPartners(){
+  const tbody = document.getElementById('tblPartners');
+  tbody.innerHTML = '';
+  if(DB.partners.length===0){ tbody.innerHTML='<tr><td colspan="11" class="empty">هیچ شراکتی ثبت نشده</td></tr>'; return; }
+  DB.partners.forEach((p,i)=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${i+1}</td><td>${p.name}</td><td>${p.phone||''}</td><td>${p.subject||''}</td>
+      <td>${fmt(p.rent)}</td><td>${fmt(p.electric)}</td><td>${fmt(p.transport)}</td>
+      <td>${fmt(p.salary)}</td><td>${fmt(p.other)}</td>
+      <td><b style="color:var(--danger);">${fmt(p.totalExp)}</b></td>
+      <td>
+        <button class="btn small" onclick="editPartner(${i})">✏️</button>
+        <button class="btn small danger" onclick="delPartner(${i})">🗑️</button>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+}
+function editPartner(i){
+  const p = DB.partners[i];
+  document.getElementById('pName').value = p.name||'';
+  document.getElementById('pPhone').value = p.phone||'';
+  document.getElementById('pSubject').value = p.subject||'';
+  document.getElementById('pRent').value = p.rent||'';
+  document.getElementById('pElectric').value = p.electric||'';
+  document.getElementById('pTransport').value = p.transport||'';
+  document.getElementById('pSalary').value = p.salary||'';
+  document.getElementById('pOther').value = p.other||'';
+  calcPartnerTotals();
+  DB.partners.splice(i,1);
+  save(); renderPartners();
+  toast('برای ویرایش، اطلاعات را اصلاح و ذخیره کنید');
+}
+function delPartner(i){ if(confirm('حذف شود؟')){ DB.partners.splice(i,1); save(); renderPartners(); } }
+
+/* ============================================================
+   USERS
+============================================================ */
+function loadImage(e, previewId){
+  const f = e.target.files[0]; if(!f) return;
+  if(f.size > 1024*500){ toast('حجم عکس باید کمتر از ۵۰۰KB باشد', true); return; }
+  const r = new FileReader();
+  r.onload = ev => { tempImage = ev.target.result; document.getElementById(previewId).src = tempImage; };
+  r.readAsDataURL(f);
+}
+
+async function saveUser(){
+  const name = Security.sanitize(document.getElementById('uName').value.trim());
+  const pass = document.getElementById('uPass').value;
+  const role = document.getElementById('uRole').value;
+  if(!name || !pass){ toast('نام و رمز الزامی است', true); return; }
+  if(pass.length < 3){ toast('رمز باید حداقل ۳ کاراکتر باشد', true); return; }
+
+  const dup = DB.users.findIndex((u,i)=>u.name===name && i!==editingUserIndex);
+  if(dup >= 0){ toast('این نام کاربری قبلاً وجود دارد', true); return; }
+
+  const hashedPass = await Security.hash(pass);
+
+  if(editingUserIndex >= 0){
+    DB.users[editingUserIndex].name = name;
+    DB.users[editingUserIndex].passHash = hashedPass;
+    DB.users[editingUserIndex].pass = '';
+    DB.users[editingUserIndex].role = role;
+    if(tempImage) DB.users[editingUserIndex].image = tempImage;
+    editingUserIndex = -1;
+    document.getElementById('userEditBadge').style.display = 'none';
+    document.getElementById('uSaveBtn').textContent = '💾 ذخیره کاربر جدید';
+    toast('کاربر ویرایش شد ✓');
+  } else {
+    DB.users.push({ name, pass:'', passHash:hashedPass, role, image: tempImage || '' });
+    toast('کاربر جدید ذخیره شد ✓');
+  }
+  save(); renderUsers(); cancelUserEdit();
+}
+function editUser(i){
+  const u = DB.users[i];
+  document.getElementById('uName').value = u.name || '';
+  document.getElementById('uPass').value = '';
+  document.getElementById('uRole').value = u.role || 'مدیر';
+  document.getElementById('uPreview').src = u.image || '';
+  tempImage = '';
+  editingUserIndex = i;
+  document.getElementById('userEditBadge').style.display = 'inline-block';
+  document.getElementById('uSaveBtn').textContent = '💾 ذخیره تغییرات';
+  window.scrollTo({top:0, behavior:'smooth'});
+  toast('حالت ویرایش کاربر: '+u.name);
+}
+function cancelUserEdit(){
+  editingUserIndex = -1;
+  document.getElementById('uName').value='';
+  document.getElementById('uPass').value='';
+  document.getElementById('uPreview').src='';
+  tempImage='';
+  document.getElementById('userEditBadge').style.display = 'none';
+  document.getElementById('uSaveBtn').textContent = '💾 ذخیره کاربر جدید';
+}
+function renderUsers(){
+  const tbody = document.getElementById('tblUsers');
+  tbody.innerHTML = '';
+  if(DB.users.length===0){ tbody.innerHTML='<tr><td colspan="6" class="empty">هیچ کاربری ثبت نشده</td></tr>'; return; }
+  DB.users.forEach((u,i)=>{
+    const tr = document.createElement('tr');
+    const hashShort = u.passHash ? u.passHash.substring(0,10)+'...' : '(متن‌رو)';
+    tr.innerHTML = `<td>${i+1}</td>
+      <td>${u.image?`<img src="${u.image}" style="width:38px;height:38px;border-radius:8px;object-fit:cover;">`:'-'}</td>
+      <td>${u.name}</td><td style="font-family:monospace; font-size:.7rem;">${hashShort}</td><td>${u.role||''}</td>
+      <td>
+        <button class="btn small" onclick="editUser(${i})">✏️</button>
+        <button class="btn small danger" onclick="delUser(${i})">🗑️</button>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+}
+function delUser(i){
+  if(DB.users[i].name==='admin'){ toast('کاربر admin قابل حذف نیست', true); return; }
+  if(confirm('حذف شود؟')){ DB.users.splice(i,1); save(); renderUsers(); }
+}
+
+/* ============================================================
+   DASHBOARD
+============================================================ */
+function renderDashboard(){
+  const totalSales = DB.customers.reduce((s,c)=>s+(c.totalAmount||0),0);
+  const totalExp = DB.expenses.reduce((s,e)=>s+e.rent+e.electric+e.transport+e.salary+e.other,0);
+  const totalLiters = DB.customers.reduce((s,c)=>s+(parseFloat(c.qty)||0),0);
+  const totalProfit = DB.customers.reduce((s,c)=>s+(c.profitTotal||0),0);
+
+  document.getElementById('stCust').textContent = DB.customers.length;
+  document.getElementById('stSales').innerHTML = fmt(totalSales)+' <small>'+DB.settings.currency+'</small>';
+  document.getElementById('stExp').innerHTML = fmt(totalExp)+' <small>'+DB.settings.currency+'</small>';
+  document.getElementById('stProfit').innerHTML = fmt(totalProfit)+' <small>'+DB.settings.currency+'</small>';
+  document.getElementById('stLiters').innerHTML = fmt(totalLiters)+' <small>لیتر</small>';
+
+  const months = ['حمل','ثور','جوزا','سرطان','اسد','سنبله','میزان','عقرب','قوس','جدی','دلو','حوت'];
+  const salesByMonth = Array(12).fill(0);
+  const expByMonth = Array(12).fill(0);
+  DB.customers.forEach(c=>{
+    if(!c.date) return;
+    const m = parseInt(c.date.split('/')[1]);
+    if(m>=1&&m<=12) salesByMonth[m-1] += (c.totalAmount||0);
+  });
+  DB.expenses.forEach(e=>{
+    if(!e.date) return;
+    const m = parseInt(e.date.split('/')[1]);
+    if(m>=1&&m<=12) expByMonth[m-1] += e.rent+e.electric+e.transport+e.salary+e.other;
+  });
+  const ctx = document.getElementById('mainChart').getContext('2d');
+  if(chartInstance) chartInstance.destroy();
+  chartInstance = new Chart(ctx, {
+    type:'bar',
+    data:{
+      labels: months,
+      datasets:[
+        {label:'فروشات', data:salesByMonth, backgroundColor:'#2563eb'},
+        {label:'مصارفات', data:expByMonth, backgroundColor:'#dc2626'}
+      ]
+    },
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{labels:{font:{family:'Vazirmatn'}}}},
+      scales:{y:{beginAtZero:true}} }
+  });
+}
+
+/* ============================================================
+   REPORTS
+============================================================ */
+function renderMonthBtns(){
+  const c = document.getElementById('monthBtns');
+  c.innerHTML = '';
+  ['حمل','ثور','جوزا','سرطان','اسد','سنبله','میزان','عقرب','قوس','جدی','دلو','حوت'].forEach((m,i)=>{
+    const b = document.createElement('button');
+    b.className='btn ghost small'; b.textContent=m;
+    b.onclick = ()=>{
+      document.getElementById('rFrom').value = `${DB.settings.year}/${String(i+1).padStart(2,'0')}/01`;
+      document.getElementById('rTo').value = `${DB.settings.year}/${String(i+1).padStart(2,'0')}/29`;
+      generateReport();
+    };
+    c.appendChild(b);
+  });
+}
+function generateReport(){
+  const from = document.getElementById('rFrom').value;
+  const to = document.getElementById('rTo').value;
+  const section = document.getElementById('rSection').value;
+  const custs = DB.customers.filter(c=>c.date && c.date>=from && c.date<=to);
+  const exps = DB.expenses.filter(e=>e.date && e.date>=from && e.date<=to);
+  const totalSales = custs.reduce((s,c)=>s+(c.totalAmount||0),0);
+  const totalBuy = custs.reduce((s,c)=>s+(c.buyAmount||0),0);
+  const totalLiters = custs.reduce((s,c)=>s+(parseFloat(c.qty)||0),0);
+  const totalProfit = custs.reduce((s,c)=>s+(c.profitTotal||0),0);
+  const totalExp = exps.reduce((s,e)=>s+e.rent+e.electric+e.transport+e.salary+e.other,0);
+
+  let html = `<h3>📊 راپور ${document.getElementById('rType').selectedOptions[0].text}</h3>
+    <p style="color:var(--muted); margin-bottom:14px;">از ${from} تا ${to} - واحد: ${DB.settings.currency}</p>`;
+
+  if(section==='all'||section==='customers'){
+    html += `<h4 style="margin-top:14px;">👥 خلاصه مشتریان</h4>
+      <table><thead><tr><th>تعداد</th><th>مجموعه فروشات</th><th>مجموعه خریداری</th><th>مجموعه لیتر</th><th>مفاد کل</th></tr></thead>
+      <tbody><tr><td>${custs.length}</td><td>${fmt(totalSales)}</td><td>${fmt(totalBuy)}</td><td>${fmt(totalLiters)}</td>
+      <td><b style="color:var(--success);">${fmt(totalProfit)}</b></td></tr></tbody></table>`;
+  }
+  if(section==='all'||section==='expenses'){
+    html += `<h4 style="margin-top:14px;">💰 تفصیل مصارفات</h4>
+      <table><thead><tr><th>کرایه</th><th>برق</th><th>انتقالات</th><th>معاش</th><th>سایر</th><th>مجموع</th></tr></thead>
+      <tbody><tr>
+        <td>${fmt(exps.reduce((s,e)=>s+e.rent,0))}</td>
+        <td>${fmt(exps.reduce((s,e)=>s+e.electric,0))}</td>
+        <td>${fmt(exps.reduce((s,e)=>s+e.transport,0))}</td>
+        <td>${fmt(exps.reduce((s,e)=>s+e.salary,0))}</td>
+        <td>${fmt(exps.reduce((s,e)=>s+e.other,0))}</td>
+        <td><b>${fmt(totalExp)}</b></td>
+      </tr></tbody></table>`;
+  }
+  if(section==='all'||section==='partners'){
+    html += `<h4 style="margin-top:14px;">🤝 شرکا</h4>
+      <table><thead><tr><th>اسم</th><th>تماس</th><th>موضوع مصرف</th><th>مجموع مصارفات</th></tr></thead><tbody>`;
+    DB.partners.forEach(p=>{
+      html += `<tr><td>${p.name}</td><td>${p.phone||''}</td><td>${p.subject||''}</td>
+        <td>${fmt(p.totalExp)}</td></tr>`;
+    });
+    html += `</tbody></table>`;
+  }
+  html += `<div class="stats" style="margin-top:20px;">
+    <div class="stat green"><div class="label">مجموعه فروشات</div><div class="value">${fmt(totalSales)}</div></div>
+    <div class="stat red"><div class="label">مجموعه مصارفات</div><div class="value">${fmt(totalExp)}</div></div>
+    <div class="stat orange"><div class="label">مفاد کل</div><div class="value">${fmt(totalProfit)}</div></div>
+  </div>`;
+
+  document.getElementById('reportOutput').innerHTML = html;
+}
+function printReport(){
+  const w = window.open('','','width=900,height=700');
+  w.document.write('<html dir="rtl"><head><title>راپور</title><style>body{font-family:Tahoma;padding:20px;} table{width:100%;border-collapse:collapse;} th,td{border:1px solid #ccc;padding:6px;text-align:center;} th{background:#2563eb;color:#fff;}</style></head><body>');
+  w.document.write(document.getElementById('reportOutput').innerHTML);
+  w.document.write('</body></html>');
+  w.document.close(); w.print();
+}
+function exportReportCSV(){
+  const from = document.getElementById('rFrom').value, to = document.getElementById('rTo').value;
+  const custs = DB.customers.filter(c=>c.date && c.date>=from && c.date<=to);
+  let csv = '\uFEFFشماره بل,اسم,آدرس,تماس,تاریخ,نوع لیتر,مقدار,واحد,فی فروش,فی خرید,مبلغ کل,مبلغ خریداری,مفاد فی دانه,مفاد کل,ملاحظات\n';
+  custs.forEach(c=>{
+    csv += `"${c.invoice||''}","${c.name||''}","${c.address||''}","${c.phone||''}","${c.date||''}","${c.package||''}",${c.qty||0},"${c.unit||''}",${c.rate||0},${c.buyRate||0},${c.totalAmount||0},${c.buyAmount||0},${c.profitPerUnit||0},${c.profitTotal||0},"${c.notes||''}"\n`;
+  });
+  downloadFile(csv,'report.csv','text/csv');
+}
+
+/* ============================================================
+   RECEIPT
+============================================================ */
+function renderReceipt(){
+  const sel = document.getElementById('rSelect');
+  const current = sel.value;
+  sel.innerHTML = '<option value="">-- انتخاب مشتری --</option>';
+  DB.customers.forEach((c,i)=>{
+    const o = document.createElement('option'); o.value=i; o.textContent=`${c.invoice||''} - ${c.name} - ${c.date||''}`;
+    sel.appendChild(o);
+  });
+  if(current && DB.customers[current]) sel.value = current;
+  sel.onchange = updateReceiptFields;
+  updateReceiptFields();
+}
+function updateReceiptFields(){
+  const idx = document.getElementById('rSelect').value;
+  const S = DB.settings;
+
+  ['1','2'].forEach(n=>{
+    const shop = document.getElementById('rcShop'+n);
+    const db   = document.getElementById('rcDb'+n);
+    const logo = document.getElementById('rcLogo'+n);
+    const footer = document.getElementById('rcFooter'+n);
+    if(shop) shop.textContent = S.shopName;
+    if(db)   db.textContent = S.dbName;
+    if(footer) footer.textContent = 'طراحی: ' + S.manager;
+    if(logo){
+      if(S.logo){ logo.src = S.logo; logo.style.display='block'; }
+      else { logo.style.display='none'; }
+    }
+  });
+  ['1','2'].forEach(n=>{
+    const phone = document.getElementById('rcShopPhone'+n);
+    if(phone) phone.textContent = S.phone;
+    const pf = document.getElementById('rcPhoneFoot'+n);
+    if(pf) pf.textContent = S.phone;
+  });
+
+  if(idx===''||idx==null||!DB.customers[idx]){
+    ['rcDate1','rcName1','rcPhone1','rcAddr1','rcPkg1','rcQty1','rcUnit1','rcRate1','rcAmount1','rcNotes1',
+     'rcSumTotal1','rcSumBuy1','rcSumProfit1','rcInv1',
+     'rcDate2','rcName2','rcPhone2','rcAddr2','rcPkg2','rcQty2','rcUnit2','rcRate2','rcAmount2','rcNotes2',
+     'rcSumPay2','rcSumLiters2','rcInv2'].forEach(id=>{
+      const el = document.getElementById(id);
+      if(el) el.textContent='---';
+    });
+    document.getElementById('rInvoiceNo').value = '';
+    return;
+  }
+  const c = DB.customers[idx];
+  document.getElementById('rInvoiceNo').value = c.invoice||'---';
+
+  document.getElementById('rcInv1').textContent = c.invoice||'---';
+  document.getElementById('rcDate1').textContent = c.date||'---';
+  document.getElementById('rcName1').textContent = c.name||'---';
+  document.getElementById('rcPhone1').textContent = c.phone||'---';
+  document.getElementById('rcAddr1').textContent = c.address||'---';
+  document.getElementById('rcPkg1').textContent = c.package||'---';
+  document.getElementById('rcQty1').textContent = c.qty||'---';
+  document.getElementById('rcUnit1').textContent = c.unit||'---';
+  document.getElementById('rcRate1').textContent = fmt(c.rate);
+  document.getElementById('rcAmount1').textContent = fmt(c.totalAmount);
+  document.getElementById('rcNotes1').textContent = c.notes||'---';
+  document.getElementById('rcSumTotal1').textContent = fmt(c.totalAmount);
+  document.getElementById('rcSumBuy1').textContent = fmt(c.buyAmount);
+  document.getElementById('rcSumProfit1').textContent = fmt(c.profitTotal);
+
+  document.getElementById('rcInv2').textContent = c.invoice||'---';
+  document.getElementById('rcDate2').textContent = c.date||'---';
+  document.getElementById('rcName2').textContent = c.name||'---';
+  document.getElementById('rcPhone2').textContent = c.phone||'---';
+  document.getElementById('rcAddr2').textContent = c.address||'---';
+  document.getElementById('rcPkg2').textContent = c.package||'---';
+  document.getElementById('rcQty2').textContent = c.qty||'---';
+  document.getElementById('rcUnit2').textContent = c.unit||'---';
+  document.getElementById('rcRate2').textContent = fmt(c.rate);
+  document.getElementById('rcAmount2').textContent = fmt(c.totalAmount);
+  document.getElementById('rcNotes2').textContent = c.notes||'---';
+  document.getElementById('rcSumPay2').textContent = fmt(c.totalAmount);
+  document.getElementById('rcSumLiters2').textContent = c.qty||'0';
+}
+function printReceipt(){
+  updateReceiptFields();
+  window.print();
+}
+
+/* ============================================================
+   SETTINGS / BACKUP
+============================================================ */
+function saveSettings(){
+  DB.settings.dbName = Security.sanitize(document.getElementById('sDbName').value);
+  DB.settings.shopName = Security.sanitize(document.getElementById('sShopName').value);
+  DB.settings.year = Security.sanitize(document.getElementById('sYear').value);
+  DB.settings.currency = Security.sanitize(document.getElementById('sCurrency').value);
+  DB.settings.manager = Security.sanitize(document.getElementById('sManager').value);
+  DB.settings.phone = Security.sanitize(document.getElementById('sPhone').value);
+  document.getElementById('brandTitle').textContent = DB.settings.shopName;
+  document.getElementById('brandSub').textContent = DB.settings.manager;
+  save(); toast('تنظیمات ذخیره شد ✓');
+}
+function saveSecurity(){
+  const t = parseInt(document.getElementById('sSessionTimeout').value)||30;
+  const a = parseInt(document.getElementById('sMaxAttempts').value)||5;
+  if(t<5 || t>240){ toast('زمان جلسه باید بین ۵ تا ۲۴۰ دقیقه باشد', true); return; }
+  if(a<3 || a>10){ toast('حداکثر تلاش باید بین ۳ تا ۱۰ باشد', true); return; }
+  DB.settings.sessionTimeout = t;
+  DB.settings.maxAttempts = a;
+  Security.maxAttempts = a;
+  save(); toast('تنظیمات امنیتی ذخیره شد ✓');
+}
+function backupJSON(){
+  const data = JSON.stringify({
+    customers: DB.customers,
+    expenses: DB.expenses,
+    partners: DB.partners,
+    settings: DB.settings
+  }, null, 2);
+  downloadFile(data,'backup_'+CURRENT_USER_KEY+'_'+getShamsiDate().replace(/\//g,'-')+'.json','application/json');
+  toast('پشتیبان دانلود شد ✓');
+}
+function restoreJSON(e){
+  const f = e.target.files[0]; if(!f) return;
+  if(!confirm('⚠️ تمام اطلاعات فعلی شما با فایل پشتیبان جایگزین می‌شود. ادامه؟')) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    try{
+      const d = JSON.parse(ev.target.result);
+      if(!d.settings) throw new Error('invalid');
+      DB.customers = d.customers || [];
+      DB.expenses  = d.expenses  || [];
+      DB.partners  = d.partners  || [];
+      DB.settings  = Object.assign({}, DB.settings, d.settings);
+      save(); location.reload();
+    }catch(err){ toast('فایل نامعتبر است', true); }
+  };
+  r.readAsText(f);
+}
+function exportAllCSV(){
+  let csv = '\uFEFF=== مشتریان ===\n';
+  csv += 'شماره بل,اسم,آدرس,تماس,تاریخ,نوع لیتر,مقدار,واحد,فی فروش,فی خرید,مبلغ کل,مبلغ خریداری,مفاد فی دانه,مفاد کل,ملاحظات\n';
+  DB.customers.forEach(c=>{
+    csv += `"${c.invoice||''}","${c.name||''}","${c.address||''}","${c.phone||''}","${c.date||''}","${c.package||''}",${c.qty||0},"${c.unit||''}",${c.rate||0},${c.buyRate||0},${c.totalAmount||0},${c.buyAmount||0},${c.profitPerUnit||0},${c.profitTotal||0},"${c.notes||''}"\n`;
+  });
+  csv += '\n=== مصارفات ===\n';
+  csv += 'تاریخ,کرایه,برق,انتقالات,معاش,موضوع سایر,مبلغ سایر,مجموع مصارفات\n';
+  DB.expenses.forEach(e=>{
+    const total = e.rent+e.electric+e.transport+e.salary+e.other;
+    csv += `"${e.date||''}",${e.rent||0},${e.electric||0},${e.transport||0},${e.salary||0},"${e.otherSubject||''}",${e.other||0},${total}\n`;
+  });
+  csv += '\n=== شرکا ===\n';
+  csv += 'اسم,تماس,موضوع مصرف,کرایه,برق,انتقالات,معاش,سایر,مجموع مصارفات\n';
+  DB.partners.forEach(p=>{
+    csv += `"${p.name}","${p.phone||''}","${p.subject||''}",${p.rent||0},${p.electric||0},${p.transport||0},${p.salary||0},${p.other||0},${p.totalExp||0}\n`;
+  });
+  downloadFile(csv,'full_export.csv','text/csv');
+  toast('خروجی CSV دانلود شد ✓');
+}
+function resetAll(){
+  if(!confirm('⚠️ هشدار! تمام اطلاعات این کاربر حذف خواهد شد. مطمئن هستید؟')) return;
+  if(!confirm('⚠️ آیا واقعاً مطمئن هستید؟ این عمل قابل بازگشت نیست!')) return;
+  localStorage.removeItem(storageKey('customers'));
+  localStorage.removeItem(storageKey('expenses'));
+  localStorage.removeItem(storageKey('partners'));
+  sessionStorage.clear(); location.reload();
+}
+function downloadFile(content, name, type){
+  const blob = new Blob([content], {type});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download=name; a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ============================================================
+   INIT
+============================================================ */
+document.addEventListener('DOMContentLoaded', async ()=>{
+  let allUsers = JSON.parse(localStorage.getItem('adv_users')) || [];
+  if(allUsers.length === 0){
+    const hashedAdmin = await Security.hash('admin');
+    allUsers.push({ name:'admin', pass:'', passHash:hashedAdmin, role:'مدیر', image:'' });
+    localStorage.setItem('adv_users', JSON.stringify(allUsers));
+  }
+
+  // بارگذاری تنظیمات برای اعمال روی صفحه خوش‌آمدگویی
+  const savedSettings = JSON.parse(localStorage.getItem('adv_settings'));
+  if(savedSettings){
+    DB.settings = Object.assign({}, DB.settings, savedSettings);
+  }
+  applyWelcomeTexts();
+
+  // نمایش صفحه خوش‌آمدگویی و سپس ورود
+  setTimeout(() => {
+    const welcome = document.getElementById('welcomeScreen');
+    const login = document.getElementById('loginScreen');
+    welcome.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+    welcome.style.opacity = '0';
+    welcome.style.transform = 'scale(1.05)';
+    setTimeout(() => {
+      welcome.style.display = 'none';
+      if(sessionStorage.getItem('loggedUser')){
+        const u = JSON.parse(sessionStorage.getItem('loggedUser'));
+        loadUserData(u.name);
+        document.getElementById('loginScreen').style.display='none';
+        document.getElementById('app').style.display='block';
+        document.getElementById('topUser').textContent = u.name;
+        initApp();
+        startSessionTimer();
+      } else {
+        login.style.display = 'flex';
+      }
+    }, 800);
+  }, 3500);
+
+  document.getElementById('loginPass').addEventListener('keypress', e=>{
+    if(e.key==='Enter') doLogin();
+  });
+
+  setTimeout(updateInstallUI, 1000);
+});
+
+function renderAll(){
+  renderCustomers(); renderExpenses(); renderPartners(); renderUsers();
+  renderReceipt(); renderDashboard();
+}
+</script>
+</body>
+</html>
